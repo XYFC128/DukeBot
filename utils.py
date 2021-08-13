@@ -6,8 +6,14 @@ def send_msg(ch: TextChannel, text: str):
     asyncio.run_coroutine_threadsafe(ch.send(text), loop)
 
 
-def print_help(ch: TextChannel):
-    send_msg(ch, 'Need help?')
+def print_help(ch: TextChannel, user, supported_commands={}):
+    send_msg(ch, 
+f'''
+有請我們的神秘嘉賓~
+{user.mention} 這次有什麼事情要委託 Duke 呢?
+Duke 目前支援以下幾種指令：
+''' + '\n'.join(['duke ' + cmd for cmd in supported_commands]) + '\n'
+    )
 
 
 def say_hello(channel: TextChannel, args=[]):

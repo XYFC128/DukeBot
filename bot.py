@@ -16,10 +16,9 @@ def main_command_handler(message: Message):
         'hello' : say_hello,
         '說你好' : say_hello
     }
-    print('no await test')
     cmds = message.content.split(' ')
     if len(cmds) < 2 or not cmds[1] in command_handlers:
-        print_help(message.channel)
+        print_help(message.channel, message.author, command_handlers)
     else:
         hdlr = command_handlers[cmds[1]]
         hdlr(message.channel, cmds[1:])
