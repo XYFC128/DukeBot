@@ -28,12 +28,13 @@ def clear_stack(channel: TextChannel, args: list, user_stack: list):
     send_msg(channel, "對不起")
 
 class PrintState:
-    def __init__(self, text: str) -> None:
+    def __init__(self, text='', embed=None) -> None:
         self.text = text
+        self.embed = embed
     
     
     def run(self, message: Message, user_stack=[]):
-        send_msg(message.channel, self.text)
+        send_msg(message.channel, self.text, emb=self.embed)
 
     def require_input(self):
         return False
