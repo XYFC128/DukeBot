@@ -1,11 +1,11 @@
 # 沒意義的註解
 #測試2
 #引入pandas 作為分析的工具(以pd表示)
+  
 import pandas as pd
-#用來剔除無關的字串內容
 import re
+from utils import *
 
-#建立一堆資料 有點慢，但應該不到爆記憶體的程度
 single108 = pd.read_csv("108單科.csv")
 mult108 = pd.read_csv("108多科.csv")
 single109 = pd.read_csv("109單科.csv")
@@ -13,11 +13,17 @@ mult109 = pd.read_csv("109多科.csv")
 single110 = pd.read_csv("110單科.csv")
 mult110 = pd.read_csv("110多科.csv")
 
- 
+def exam_command_handler(channel: TextChannel, args: list, user_stack: list):
+    s = listToString(args)
+    f =""
+    f += f'累積人數:{get(processingQuerySubjects(s),processingQueryScore(s))}\n'
+    f += f'累積人數:{correspond(processingQuerySubjects(s),get(processingQuerySubjects(s),processingQueryScore(s)))}\n'
+    user_stack.append(PrintState(f))
 
 def processingQuerySubjects(s:str)->str:
     '''
-    把字串處理成，照順序的國英數自社
+    turn s into inorder subject string
+    order 國英數自社
     '''
     reString = ""
     if "國" in s:
@@ -30,15 +36,14 @@ def processingQuerySubjects(s:str)->str:
         reString += "自"
     if "社" in s:
         reString += "社"
-    #if len(reString)==0: 丟出警告
     return reString;
 
 def processingQueryScore(s:str) -> int:
     '''
     找到字串中的級分
     '''
-    #if len(re.sub("\D","",s))==0: 丟出警告
-    return eval(re.sub("\D","",s))
+    
+    return int(re.sub("\D","",s))
 
 def get(s:str,score:int) ->int:
 
@@ -49,7 +54,13 @@ def get(s:str,score:int) ->int:
         return int(single110[s][15-score])
     elif len(s) <= 4:
         return int(mult110[s][(len(s)*15)-score])
-     #else 丟出警告
+def listToString(s): 
+    
+    # initialize an empty string
+    str1 = " " 
+    
+    # return string  
+    return (str1.join(s))
         
 def correspond(subject:str,acl:int) -> str:
     result = ""
@@ -80,6 +91,7 @@ def search(year:int,subject:str,alc:int)->str:
             closescore =  ((len(subject)*15)-int(mult108[condition2].shape[0]))
             if score != closescore:
                 result += f'相當接近{closescore}級分(累積人數差不到1000)     '
+            #result += 15*len(subject) - int(mult108[condition].shape[0])
     if year == 109:
         if len(subject) == 1:
             condition = single109[subject] <= alc
@@ -102,6 +114,7 @@ def search(year:int,subject:str,alc:int)->str:
             closescore =  ((len(subject)*15)-int(mult109[condition2].shape[0]))
             if score != closescore:
                 result += f'相當接近{closescore}級分(累積人數差不到1000)\n'
+            #result += 15*len(subject) - int(mult108[condition].shape[0])
             
     return result
             
