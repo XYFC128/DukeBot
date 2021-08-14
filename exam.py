@@ -5,7 +5,7 @@
 import pandas as pd
 import re
 from utils import *
-
+import discord
 single108 = pd.read_csv("data/108單科.csv")
 mult108 = pd.read_csv("data/108多科.csv")
 single109 = pd.read_csv("data/109單科.csv")
@@ -15,10 +15,12 @@ mult110 = pd.read_csv("data/110多科.csv")
 
 def exam_command_handler(channel: TextChannel, args: list, user_stack: list):
     s = listToString(args)
-    f =""
-    f += f'累積人數:{get(processingQuerySubjects(s),processingQueryScore(s))}\n'
-    f += f'累積人數:{correspond(processingQuerySubjects(s),get(processingQuerySubjects(s),processingQueryScore(s)))}\n'
-    user_stack.append(PrintState(f))
+    embed=discord.Embed(title="歡迎收看浪漫Duke，幫你找到屬於你的落點", color=0xffb8f7)
+    embed.set_author(name="浪漫Duke", icon_url="https://media.discordapp.net/attachments/874841739792355363/876105436275826708/unknown.png")
+    embed.add_field(name="累積人數:", value=f'{get(processingQuerySubjects(s),processingQueryScore(s))}\n', inline=False)
+    embed.add_field(name="對應級分", value=f'{correspond(processingQuerySubjects(s),get(processingQuerySubjects(s),processingQueryScore(s)))}\n', inline=True)
+
+    user_stack.append(PrintState(embed=embed))
 
 def processingQuerySubjects(s:str)->str:
     '''
@@ -36,7 +38,7 @@ def processingQuerySubjects(s:str)->str:
         reString += "自"
     if "社" in s:
         reString += "社"
-    return reString;
+    return reString
 
 def processingQueryScore(s:str) -> int:
     '''
