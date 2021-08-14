@@ -8,9 +8,8 @@ from discord.ext import commands
 
 import os
 
+user_stacks = {}
 def get_user_stack(user) -> list:
-    user_stacks = {}
-    
     if not user in user_stacks:
         user_stacks[user] = []
 
@@ -22,10 +21,11 @@ def clear_no_input_states(message: Message, stack: list):
         return
 
     while len(stack) > 0 and not stack[-1].require_input():
-        cur_state = stack[-1]
-        del stack[-1]
-
+        cur_state = stack.pop()
         cur_state.run(message, cur_state)
+
+    if not isinstance(stack, list):
+        stack = [stack]
 
 
 def main_command_handler(message: Message):
@@ -55,13 +55,11 @@ def user_msg_handler(message: Message):
     """
     user = message.author
     stack = get_user_stack(user)
-    
     if len(stack) == 0:
         return
 
-    cur_state = stack[-1]
-    del stack[-1]
-    cur_state.run(message, cur_state)
+    cur_state = stack.pop()
+    cur_state.run(message, stack)
 
     clear_no_input_states(message, stack)
 
