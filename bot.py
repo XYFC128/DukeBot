@@ -2,7 +2,7 @@
 
 from utils import *
 from romantic import *
-
+from exam import *
 from discord import Client, Guild, Message, TextChannel
 from discord.ext import commands
 
@@ -36,7 +36,8 @@ def main_command_handler(message: Message):
     command_handlers = {
         'hello' : say_hello,
         '說你好' : say_hello,
-        '找浪漫' : romantic_command_handler
+        '找浪漫' : romantic_command_handler,
+        '查學測' : exam_command_handler
     }
     cmds = message.content.split(' ')
     if len(cmds) < 2 or not cmds[1] in command_handlers:
