@@ -6,12 +6,12 @@ import pandas as pd
 import re
 from utils import *
 
-single108 = pd.read_csv("108單科.csv")
-mult108 = pd.read_csv("108多科.csv")
-single109 = pd.read_csv("109單科.csv")
-mult109 = pd.read_csv("109多科.csv")
-single110 = pd.read_csv("110單科.csv")
-mult110 = pd.read_csv("110多科.csv")
+single108 = pd.read_csv("data/108單科.csv")
+mult108 = pd.read_csv("data/108多科.csv")
+single109 = pd.read_csv("data/109單科.csv")
+mult109 = pd.read_csv("data/109多科.csv")
+single110 = pd.read_csv("data/110單科.csv")
+mult110 = pd.read_csv("data/110多科.csv")
 
 def exam_command_handler(channel: TextChannel, args: list, user_stack: list):
     s = listToString(args)
