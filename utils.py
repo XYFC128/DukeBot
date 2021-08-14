@@ -1,7 +1,7 @@
 import asyncio
 from discord import *
 
-def send_msg(ch: TextChannel, text: str):
+def send_msg(ch, text: str):
     loop = asyncio.get_event_loop()
     asyncio.run_coroutine_threadsafe(ch.send(text), loop)
 
