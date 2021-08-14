@@ -18,8 +18,9 @@ def step_options(anwser: str, stack: list):
 
 
 class RomanticInternalState:
-    def __init__(self, options: list) -> None:
+    def __init__(self, options: list, re_enter_count=0) -> None:
         self.options = options
+        self.re_enter_count = re_enter_count
     
     
     def run(self, message: Message, user_stack: list):
@@ -27,8 +28,9 @@ class RomanticInternalState:
         if anwser in self.options:
             step_options(anwser, user_stack)
         else:
+            self.re_enter_count+=1
             user_stack.append(self)
-            user_stack.append(PrintState("請重新輸入"))
+            user_stack.append(PrintState('請重新輸入' + '!' * self.re_enter_count))
 
 
     def require_input(self):
