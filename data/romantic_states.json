@@ -1,0 +1,26 @@
+{
+    "問題類型": {
+        "options": ["告白", "找對象", "精進"],
+        "print": "請輸入問題類型"
+    },
+    "精進": {
+        "options": ["有異性伴侶", "無異性伴侶"],
+        "print": "請輸入對象狀態"
+    },
+    "有異性伴侶": {
+        "options": ["紳士決鬥", "Hide on bush"],
+        "print": "請輸選擇浪漫技巧"
+    },
+    "紳士決鬥": {
+        "options": [],
+        "print": "Duke為你安排：紳士決鬥"
+    },
+    "Hide on bush": {
+        "options": [],
+        "print": "Duke為你安排：Hide on bush"
+    },
+    "無異性伴侶": {
+        "options": [],
+        "print": "Duke為你安排：浪漫突進"
+    }
+}
