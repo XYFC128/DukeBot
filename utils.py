@@ -23,6 +23,10 @@ def say_hello(channel: TextChannel, args=[], user_stack=[]):
     send_msg(channel, '歡迎收看 浪漫 Duke ! 想學更多浪漫技巧記得訂閱我的 channel ，開啟小鈴鐺，分享！浪漫 Duke 幫你找回屬於你的浪漫')
 
 
+def clear_stack(channel: TextChannel, args: list, user_stack: list):
+    user_stack.clear()
+    send_msg(channel, "對不起")
+
 class PrintState:
     def __init__(self, text: str) -> None:
         self.text = text

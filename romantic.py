@@ -26,6 +26,9 @@ class RomanticInternalState:
         anwser = message.content
         if anwser in self.options:
             step_options(anwser, user_stack)
+        else:
+            user_stack.append(self)
+            user_stack.append(PrintState("請重新輸入"))
 
 
     def require_input(self):

@@ -36,6 +36,8 @@ def main_command_handler(message: Message):
     command_handlers = {
         'hello' : say_hello,
         '說你好' : say_hello,
+        'STFU': clear_stack,
+        '閉嘴': clear_stack,
         '找浪漫' : romantic_command_handler,
         '查學測' : exam_command_handler
     }
