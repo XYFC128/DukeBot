@@ -1,27 +1,36 @@
-# 沒意義的註解
-#測試2
+
 #引入pandas 作為分析的工具(以pd表示)
   
 import pandas as pd
 import re
 from utils import *
 import discord
+#使用的分析資料
 single108 = pd.read_csv("data/108單科.csv")
 mult108 = pd.read_csv("data/108多科.csv")
 single109 = pd.read_csv("data/109單科.csv")
 mult109 = pd.read_csv("data/109多科.csv")
 single110 = pd.read_csv("data/110單科.csv")
 mult110 = pd.read_csv("data/110多科.csv")
-
+#檢查輸入並發送級分訊息
 def exam_command_handler(channel: TextChannel, args: list, user_stack: list):
     s = listToString(args)
+    if processingQuerySubjects(s) =='':
+      user_stack.append(PrintState("講你要查的科目還有級分，我又不會通靈"))
+      return
+    if processingQueryScore(s) == -1:
+      user_stack.append(PrintState("輸入正常的級分，這樣Duke才有辦法幫你"))
+      return
+
+    
     embed=discord.Embed(title="歡迎收看浪漫Duke，幫你找到屬於你的落點", color=0xffb8f7)
     embed.set_author(name="浪漫Duke", icon_url="https://media.discordapp.net/attachments/874841739792355363/876105436275826708/unknown.png")
     embed.add_field(name="累積人數:", value=f'{get(processingQuerySubjects(s),processingQueryScore(s))}\n', inline=False)
-    embed.add_field(name="對應級分", value=f'{correspond(processingQuerySubjects(s),get(processingQuerySubjects(s),processingQueryScore(s)))}\n', inline=True)
+    embed.add_field(name="109年對應級分", value=f'{search(109,processingQuerySubjects(s),get(processingQuerySubjects(s),processingQueryScore(s)))}\n', inline=True)
+    embed.add_field(name="108年對應級分", value=f'{search(109,processingQuerySubjects(s),get(processingQuerySubjects(s),processingQueryScore(s)))}\n', inline=True)
 
     user_stack.append(PrintState(embed=embed))
-
+#提取出科目的部分
 def processingQuerySubjects(s:str)->str:
     '''
     turn s into inorder subject string
@@ -44,8 +53,14 @@ def processingQueryScore(s:str) -> int:
     '''
     找到字串中的級分
     '''
-    
-    return int(re.sub("\D","",s))
+    score = re.sub("\D","",s)
+    if score == "":
+      return -1
+    if int(score) < 0:
+      return -1
+    if int(score) > len(processingQuerySubjects(s))*15:
+      return -1
+    return int(score)
 
 def get(s:str,score:int) ->int:
 
@@ -71,7 +86,8 @@ def correspond(subject:str,acl:int) -> str:
     return result
     
 def search(year:int,subject:str,alc:int)->str:
-    result = f'{year}年對應到的級分為'
+    #result = f'{year}年對應到的級分為'
+    result = ""
     if year == 108:
         if len(subject) == 1:
             condition = single108[subject] <= alc
