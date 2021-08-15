@@ -40,7 +40,8 @@ def main_command_handler(message: Message):
         'STFU': clear_stack,
         '閉嘴': clear_stack,
         '找浪漫' : romantic_command_handler,
-        '查學測' : exam_command_handler
+        '查學測' : exam_command_handler,
+        '查校系' : major_command_handler
     }
     cmds = message.content.split(' ')
     if len(cmds) < 2 or not cmds[1] in command_handlers:
