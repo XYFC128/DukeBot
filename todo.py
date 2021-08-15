@@ -39,7 +39,7 @@ def print_user_todo_list(user):
         # TBD 排序->embed
         pass
     else:
-        TestChannel.send("無待辦事項")
+        TextChannel.send("無待辦事項")
   
 
 class TodoState:
