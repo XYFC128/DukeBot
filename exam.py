@@ -12,6 +12,7 @@ single109 = pd.read_csv("data/109單科.csv")
 mult109 = pd.read_csv("data/109多科.csv")
 single110 = pd.read_csv("data/110單科.csv")
 mult110 = pd.read_csv("data/110多科.csv")
+ntu109 = pd.read_csv("data/台大109.csv")
 class ExamInternalState:
     def run(self, message: Message, user_stack: list):
         s = message.content
@@ -42,6 +43,32 @@ def exam_command_handler(channel: TextChannel, args: list, user_stack: list):
     embed.add_field(name="累積人數:", value=f'{get(processingQuerySubjects(s),processingQueryScore(s))}\n', inline=False)
     embed.add_field(name="109年對應級分", value=f'{search(109,processingQuerySubjects(s),get(processingQuerySubjects(s),processingQueryScore(s)))}\n', inline=True)
     embed.add_field(name="108年對應級分", value=f'{search(109,processingQuerySubjects(s),get(processingQuerySubjects(s),processingQueryScore(s)))}\n', inline=True)
+
+    send_msg(channel,emb=embed)
+#查校系(目前只有寫109的NTU))))
+def major_command_handler(channel: TextChannel, args: list, user_stack: list):
+    s = listToString(args[1]).replace(" ","")
+    print(s)
+    embed=discord.Embed(title="歡迎收看浪漫Duke，幫你找到屬於你的落點", description="--目前為demo板，只有用出台大109年的資料",color=0xffb8f7)
+    embed.set_author(name="浪漫Duke", icon_url="https://media.discordapp.net/attachments/874841739792355363/876105436275826708/unknown.png")
+    con = ntu109["系"].str.contains(s)
+    data = ntu109[con]
+    print(data.shape[0])
+    if data.shape[0] == 0:
+      send_msg(channel,"找不到對應的校系")
+      return
+    for i in range(data.shape[0]):
+      seri = data.iloc(0)[i]
+      embed.add_field(name="代碼", value=f'{seri[0]}', inline=False)
+      embed.add_field(name="校系", value=f'{seri[1]}', inline=False)
+      embed.add_field(name="人數", value=f"{seri[2]}", inline=True)  
+      embed.add_field(name="篩選1", value=f"{seri[3]}\n{get109(processingQuerySubjects(seri[3]),processingQueryScore(seri[3]))}", inline=True)
+      embed.add_field(name="篩選2", value=f"{seri[4]}\n{get109(processingQuerySubjects(seri[4]),processingQueryScore(seri[4]))}", inline=True) 
+      embed.add_field(name="篩選3", value=f"{seri[5]}\n{get109(processingQuerySubjects(seri[5]),processingQueryScore(seri[5]))}", inline=True) 
+      embed.add_field(name="篩選4", value=f"{seri[6]}\n{get109(processingQuerySubjects(seri[6]),processingQueryScore(seri[6]))}", inline=True) 
+      embed.add_field(name="有無超額比序", value=f"{seri[7]}", inline=True)
+     
+    embed.add_field(name="會不會上?", value=f'在浪漫的世界裡沒有會上不會上，\n 只有今年上和以後上', inline=False)
 
     send_msg(channel,emb=embed)
 
@@ -77,7 +104,8 @@ def processingQueryScore(s:str) -> int:
     return int(score)
 
 def get(s:str,score:int) ->int:
-
+    if score == -1:
+      return;
     '''
     回傳累積人數
     '''
@@ -85,6 +113,17 @@ def get(s:str,score:int) ->int:
         return int(single110[s][15-score])
     elif len(s) <= 4:
         return int(mult110[s][(len(s)*15)-score])
+def get109(s:str,score:int) ->str:
+
+    '''
+    回傳累積人數
+    '''
+    if score == -1:
+      return ""
+    if len(s) == 1:
+        return f'累積人數:{int(single109[s][15-score])}'
+    elif len(s) <= 4:
+        return f'累積人數:{int(mult109[s][(len(s)*15)-score])}'
 def listToString(s): 
     
     # initialize an empty string
@@ -93,6 +132,12 @@ def listToString(s):
     # return string  
     return (str1.join(s))
         
+def correspond(subject:str,acl:int) -> str:
+    result = ""
+    result += search(108,subject,acl)
+    result += search(109,subject,acl)
+    return result
+    
 def search(year:int,subject:str,alc:int)->str:
     #result = f'{year}年對應到的級分為'
     result = ""
