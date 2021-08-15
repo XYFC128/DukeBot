@@ -23,7 +23,7 @@ def clear_no_input_states(message: Message, stack: list):
 
     while len(stack) > 0 and not stack[-1].require_input():
         cur_state = stack.pop()
-        cur_state.run(message, cur_state)
+        cur_state.run(message, stack)
 
     if not isinstance(stack, list):
         stack = [stack]
