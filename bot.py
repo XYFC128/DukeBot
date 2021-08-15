@@ -3,8 +3,9 @@
 from utils import *
 from romantic import *
 from exam import *
-from discord import Client, Guild, Message, TextChannel
+from discord import Guild, Message, TextChannel
 from discord.ext import commands
+from dislash import InteractionClient
 
 import os
 
@@ -66,7 +67,8 @@ def user_msg_handler(message: Message):
     clear_no_input_states(message, stack)
 
 
-bot = Client()
+bot = commands.Bot(command_prefix='$')
+slash = InteractionClient(bot)
 
 @bot.event
 async def on_ready():
@@ -87,6 +89,16 @@ async def on_message(message: Message):
 async def on_guild_join(guild : Guild):
     #Duke 加入一個新的伺服器，準備幹話一番
     pass
+
+
+@slash.event
+async def on_dropdown(inter: MessageInteraction):
+    user = inter.author
+    stack = get_user_stack(user)
+    handler = get_handler(inter.message)
+    if handler != None:
+        handler(inter, stack)
+        clear_no_input_states(inter.message, stack)
 
 
 with open('token.txt', 'r') as f:
