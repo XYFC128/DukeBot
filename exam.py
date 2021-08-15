@@ -1,25 +1,39 @@
-
+# 沒意義的註解
+#測試2
 #引入pandas 作為分析的工具(以pd表示)
   
 import pandas as pd
 import re
 from utils import *
 import discord
-#使用的分析資料
 single108 = pd.read_csv("data/108單科.csv")
 mult108 = pd.read_csv("data/108多科.csv")
 single109 = pd.read_csv("data/109單科.csv")
 mult109 = pd.read_csv("data/109多科.csv")
 single110 = pd.read_csv("data/110單科.csv")
 mult110 = pd.read_csv("data/110多科.csv")
-#檢查輸入並發送級分訊息
+class ExamInternalState:
+    def run(self, message: Message, user_stack: list):
+        s = message.content
+        l = [s]
+        if processingQuerySubjects(s) !='' and processingQueryScore(s) != -1:
+          exam_command_handler(message.channel, l,list)
+        else:
+           send_msg(message.channel,text='好喔')
+
+
+    def require_input(self):
+        return True
 def exam_command_handler(channel: TextChannel, args: list, user_stack: list):
     s = listToString(args)
     if processingQuerySubjects(s) =='':
-      user_stack.append(PrintState("講你要查的科目還有級分，我又不會通靈"))
+      user_stack.append(ExamInternalState())
+      send_msg(channel,text="講你要查的科目還有級分，我又不會通靈\n 來 再輸一次")
+      
       return
     if processingQueryScore(s) == -1:
-      user_stack.append(PrintState("輸入正常的級分，這樣Duke才有辦法幫你"))
+      user_stack.append(ExamInternalState())
+      send_msg(channel,text="輸入正常的級分，這樣Duke才有辦法幫你\n 來 再輸一次")
       return
 
     
@@ -29,8 +43,8 @@ def exam_command_handler(channel: TextChannel, args: list, user_stack: list):
     embed.add_field(name="109年對應級分", value=f'{search(109,processingQuerySubjects(s),get(processingQuerySubjects(s),processingQueryScore(s)))}\n', inline=True)
     embed.add_field(name="108年對應級分", value=f'{search(109,processingQuerySubjects(s),get(processingQuerySubjects(s),processingQueryScore(s)))}\n', inline=True)
 
-    user_stack.append(PrintState(embed=embed))
-#提取出科目的部分
+    send_msg(channel,emb=embed)
+
 def processingQuerySubjects(s:str)->str:
     '''
     turn s into inorder subject string
@@ -79,12 +93,6 @@ def listToString(s):
     # return string  
     return (str1.join(s))
         
-def correspond(subject:str,acl:int) -> str:
-    result = ""
-    result += search(108,subject,acl)
-    result += search(109,subject,acl)
-    return result
-    
 def search(year:int,subject:str,alc:int)->str:
     #result = f'{year}年對應到的級分為'
     result = ""
