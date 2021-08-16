@@ -40,7 +40,7 @@ def main_command_handler(message: Message):
         '說你好' : say_hello,
         'STFU': clear_stack,
         '閉嘴': clear_stack,
-        '找浪漫' : romantic_command_handler,
+        '教我' : romantic_command_handler,
         '查學測' : exam_command_handler,
         '查校系' : major_command_handler,
         'todo' : todo_command_handler
