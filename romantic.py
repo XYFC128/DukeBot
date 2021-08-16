@@ -40,10 +40,13 @@ class RomanticState:
                             icon_url=attr['icon_url']
                         )
                     elif embed_element.tag == 'field':
+                        inline = True
+                        if 'inline' in attr:
+                            inline = (attr['inline'].lower() in ['true', '1'])
                         embed.add_field(
                             name=attr['name'],
                             value=attr['value'],
-                            inline=(attr['inline'].lower() in ['true', '1'])
+                            inline=inline
                         )
 
             elif child.tag == 'node':
