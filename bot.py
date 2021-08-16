@@ -12,10 +12,10 @@ import os
 
 user_stacks = {}
 def get_user_stack(user) -> list:
-    if not user in user_stacks:
-        user_stacks[user] = []
+    if not user.id in user_stacks:
+        user_stacks[user.id] = []
 
-    return user_stacks[user]
+    return user_stacks[user.id]
 
 
 def clear_no_input_states(message: Message, stack: list):
