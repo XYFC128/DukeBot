@@ -1,33 +1,33 @@
 <?xml version="1.0"?>
 <node name="問題類型">
-    <display>沒問題，這次要委託 Duke 的問題是什麼類型的？</display>
+<display>沒問題，這次要委託 Duke 的問題是什麼類型的？🕵</display>
     <node name="精進">
-        <display>請問你的異性伴侶有和其他人交往嗎？</display>
+        <display>請問你的異性伴侶有和其他人交往嗎?👩‍❤️‍👨</display>
         <node name="有">
             <ad>跟那個男的👊👊一決高下👊👊</ad>
-            <display>太好了，Duke 這邊剛好有幾招，你比較想要那一招？</display>
-            <node name="紳士決鬥">
-                <ad>追到有男朋友的女生</ad>
-                <display>來讓 Duke 教你一個觀念</display>
-                <display>在浪漫的世界裡，沒分有道德和不道德的</display>
+            <display>太好了，Duke 這邊剛好有幾招，你比較想要那一招?🧰</display>
+            <node name="紳士決鬥🐃">
+                <ad>追到有男朋友的女生💞</ad>
+                <display>來讓 Duke 教你一個觀念🍑</display>
+                <display>在浪漫的世界裡，沒分有道德和不道德的🧘‍♂</display>
                 <display>只有浪漫❤️和更浪漫💖的人</display>
-                <display>我們馬上找到那個男的</display>
+                <display>🎯我們馬上找到那個男的</display>
                 <display>跟他一決高下💪💪💪</display>
                 <display>🤼‍♀紳士決鬥！</display>
             </node>
-            <node name="Hide on Bush + 華麗的一擊">
+            <node name="Hide on Bush + 華麗的一擊🙏">
                 <display>Hide on Bush！</display>
-                <display>Hide on Bush！是 Duke 鑽研英雄聯盟 9 年的技巧</display>
-                <display>也讓 Duke 好不容易從上一季的銅牌晉升到了銀牌</display>
-                <display>那個人完全不知道你的存在</display>
-                <display>你卻對他的情報了若指掌</display>
-                <display>這個時候 他就在明 你就在暗</display>
-                <display>我們就佔據了一個戰略上的絕對優勢</display>
-                <display>我們只要躲在暗處</display>
-                <display>等待時機成熟</display>
+                <display>Hide on Bush！是 Duke 鑽研英雄聯盟 9 年的技巧🧙</display>
+                <display>也讓 Duke 好不容易從上一季的銅牌🥉晉升到了銀牌🥈</display>
+                <display>那個人完全不知道你的存在🌬</display>
+                <display>你卻對他的情報了若指掌♟</display>
+                <display>💣這個時候 他就在明 你就在暗</display>
+                <display>我們就佔據了一個戰略上的絕對優勢💌</display>
+                <display>我們只要躲在暗處🥷</display>
+                <display>🍑等待時機成熟</display>
                 <display>我們就給他一個...</display>
-                <display>ㄅ一ㄤˋ ！！！</display>
-                <display>華麗的一擊</display>
+                <display💥ㄅ一ㄤˋ ！！！</display>
+                <display>華麗的一擊💘</display>
                 <display>給酷接Q</display>
                 <embed title="浪漫金句" description="Hide on Bush 最重要的精華就是要忍耐，忍到那個最佳時機，在這之前絕對絕對都要忍住" color="fff200">
                     <author name="浪漫 Duke" icon_url="https://i.imgur.com/HrEYLe3.jpg" url="https://www.youtube.com/playlist?list=PLkFEPyPsiQITFD8Q9xHipvJMX-IaL5waE"></author>
@@ -36,49 +36,49 @@
             </node>
         </node>
         <node name="無">
-            <ad>跳過尷尬火速牽手</ad>
-            <display>A～沒問題，Duke 教你們怎麼 浪！漫！突！進！</display>
-            <display>Duke 來跟你講個小故事</display>
-            <display>Duke 國小的時候，從～來～沒寫過功課</display>
+            <ad>跳過尷尬火速牽手🤝</ad>
+            <display>A～沒問題，Duke 教你們怎麼 浪！漫！突！進！💗</display>
+            <display>Duke 來跟你講個小故事📖</display>
+            <display>Duke 國小的時候，從～來～沒寫過功課✏</display>
             <display>沒寫功課就會被老師罰跑操場</display>
             <display>Duke 在這個罰跑操場的過程中呢</display>
             <display>就在想怎麼把這個衝刺🏃🏻跟突進⛷️的過程</display>
             <display>化作在我們浪漫的生活之中💏</display>
-            <display>Duke 馬上就教你怎麼 浪！漫！突！進！</display>
+            <display>Duke 馬上就教你怎麼 浪！漫！突！進！💗</display>
             <display>你知道男女關係🧑‍🤝‍🧑最重要的是什麼嗎？</display>
             <display>他想講什麼，根本不重要！</display>
             <display>他想說什麼，根本不用聽！</display>
             <display>你只要顧好你會的，你喜歡的</display>
             <display>一直講，拼命講</display>
             <display>展現你的魅力</display>
-            <display>這個就是所謂的 浪！漫！突！進！</display>
-            <display>堅守自己的立場！</display>
+            <display>這個就是所謂的 浪！漫！突！進！💗</display>
+            <display>🚧堅守自己的立場！</display>
             <display>蓋過他的話語權🔇！</display>
-            <display>達到一個突進的效果</display>
-            <embed title="浪！漫！突！進！" description="浪漫突進" color="fff200">
+            <display>達到一個突進的效果💖</display>
+            <embed title="浪！漫！突！進！" description="浪漫突進💗" color="fff200">
                     <author name="浪漫 Duke" icon_url="https://i.imgur.com/HrEYLe3.jpg" url="https://www.youtube.com/playlist?list=PLkFEPyPsiQITFD8Q9xHipvJMX-IaL5waE"></author>
                     <image url="https://i.imgur.com/CCzqKiU.jpg"></image>
             </embed>
         </node>
     </node>
     <node name="告白">
-        <ad>完美告白</ad>
-        <display>你跟對方認識多久了？</display>
+        <ad>完美告白💌</ad>
+        <display>🈵你跟對方認識多久了？</display>
         <node name="10年">
-            <ad>讓十年工具人死而復生</ad>
-            <display>哀呀！你這種就是標準的『十年工具人』。</display>
-            <display>Duke為你精心策劃了一場告白行動</display>
-            <display>Duke 相信在你們相處這麼長的時間中一定已經建立了深厚的感情</display>
-            <embed title="裝死告白" description="這時你只要打電話給對方然後裝死等他來跟你告白" color="0xed87be">
+            <ad>讓十年工具人死而復生🔥</ad>
+            <display>哀呀！🤷‍♂️你這種就是標準的『十年工具人』。</display>
+            <display>Duke為你精心策劃了一場告白行動💝</display>
+            <display>Duke ❣️相信在你們相處這麼長的時間中一定已經建立了深厚的感情</display>
+            <embed title="裝死告白" description="這時你只要打電話☎給對方然後裝死等他來跟你告白" color="0xed87be">
             </embed>
         </node>
         <node name="11年">
             <ad>🧨 激化 11 年一如死水的感情</ad>
             <display>相處了 11 年卻沒有產生任何火花💥</display>
             <display>我只講出最關鍵～的核心問題</display>
-            <display>你這個人 沒有浪漫的元素</display>
+            <display>你這個人 沒有浪漫的元素🖤</display>
             <display>你沒有浪漫灌注你的生活🏡</display>
-            <display>你的生活中沒有足夠的浪漫</display>
+            <display>🖤你的生活中沒有足夠的浪漫</display>
             <display>去激起那個浪漫的火花💥</display>
             <display>🩸浪漫因子，這個專有名詞有沒有聽過？</display>
             <display>我發明的</display>
@@ -87,36 +87,36 @@
             <display>看來只好搬出Duke的壓箱寶了——絕對浪漫經典不敗告白公式🪄</display>
             <display>首先，你要在對方面前下跪🧎， Face to Face 告訴他你喜歡他</display>
             <display>接下來，對方如果接受，他就會來親你👄</display>
-            <display>這樣你就告白成功了</display>
-            <display>你就成功在你的生活中注入了一點浪漫因子</display>
+            <display>這樣你就告白成功了💘</display>
+            <display>你就成功在你的生活中注入了一點浪漫因子💕</display>
             <embed title="浪漫金句" description="浪漫 Duke 的招從來沒有不管用過，沒有不管用的人，只有不夠浪漫的人" color="fff200">
                     <author name="浪漫 Duke" icon_url="https://i.imgur.com/HrEYLe3.jpg" url="https://www.youtube.com/playlist?list=PLkFEPyPsiQITFD8Q9xHipvJMX-IaL5waE"></author>
                     <image url="https://i.imgur.com/jJOgkV3.jpg"></image>
             </embed>
         </node>
         <node name="其他">
-            <display>這時候就要用『科學浪漫』了</display>
-            <display>經過Duke多年的研究</display>
-            <display>想求姻緣的人都會去月老廟，因此我們只要去月老廟假裝是廟方工作人員跟對方要Line就可以輕鬆要到他的Line了</display>
+            <display>這時候就要用『🤖科學浪漫』了</display>
+            <display>經過Duke多年的研究🧠</display>
+            <display>想求姻緣的人都會去月老廟，因此我們只要去月老廟假裝是廟方工作人員跟對方要Line就可以輕鬆要到他的Line了📞</display>
         </node>
     </node>
     <node name="找對象">
-        <display>你想用什麼媒介呢？</display>
+        <display>🤏你想用什麼媒介呢？</display>
         <node name="月老廟">
-            <ad>用科學的手段找到你最理想的對象</ad>
-            <display>經過Duke多年的研究</display>
+            <ad>用科學的手段找到你最理想的對象❤️</ad>
+            <display>經過Duke多年的研究🤌</display>
             <display>想求姻緣的人都會去月老廟，因此我們只要去月老廟假裝是廟方工作人員跟對方要Line就可以輕鬆要到他的Line了</display>
-            <display>科學浪漫！</display>
+            <display>🤖科學浪漫！</display>
         </node>
         <node name="Line">
-            <display>你這樣浪漫嗎？</display>
+            <display>你這樣浪漫嗎？😡</display>
             <display>用賴有比較快嗎？見面了嗎？有 Face to Face 嗎？</display>
-            <display>Duke 建議還是使用更先進的媒介：月老廟</display>
+            <display>Duke 建議還是使用更先進的媒介：月老廟⛩</display>
         </node>
         <node name="Tinder">
-            <display>你這樣浪漫嗎？</display>
+            <display>你這樣浪漫嗎？😡</display>
             <display>Duke 有叫你用 Tinder 嗎？見面了嗎？有 Face to Face 嗎？</display>
-            <display>Duke 建議還是使用更先進的媒介：月老廟</display>
+            <display>Duke 建議還是使用更先進的媒介：月老廟⛩</display>
         </node>
     </node>
 </node>
