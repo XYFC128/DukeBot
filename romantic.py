@@ -67,9 +67,9 @@ class RomanticState:
     def run(self, message: Message, user_stack: list):
         if len(self.options) > 0:
             options = [opt for opt in self.options]
-            user_stack.append(MenuState('輸入選單：', options, self.selected_handler))
-
-        user_stack.append(PrintState(self.display, embed=self.embed, inter=self.inter))
+            user_stack.append(MenuState(self.display, options, self.selected_handler, embed=self.embed, inter=self.inter))
+        else:
+            user_stack.append(PrintState(self.display, embed=self.embed, inter=self.inter))
 
 
     def require_input(self):

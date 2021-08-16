@@ -67,12 +67,13 @@ class PrintState:
         return False
 
 class MenuState:
-    def __init__(self, text: str, options: list, selection_handler: Callable[[MessageInteraction, list], None], place_holder='請選擇', max_select=1, inter=None):
+    def __init__(self, text: str, options: list, selection_handler: Callable[[MessageInteraction, list], None], place_holder='請選擇', max_select=1, embed=None,inter=None):
         self.text = text
         self.options = options
         self.selection_handler = selection_handler
         self.place_holder = place_holder
         self.max_select = max_select
+        self.embed = embed
         self.inter = inter
 
 
@@ -83,6 +84,7 @@ class MenuState:
 
         msg = await sender(
             self.text, 
+            embed=self.embed,
             components=[
                 SelectMenu(
                     placeholder=self.place_holder,
