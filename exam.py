@@ -20,7 +20,13 @@ class ExamInternalState:
         if processingQuerySubjects(s) !='' and processingQueryScore(s) != -1:
           exam_command_handler(message.channel, l,list)
         else:
-           send_msg(message.channel,text='好喔')
+           embed = Embed(
+               title='你懂什麼是浪漫嗎？',
+               description='你這樣亂回我訊息是浪漫嗎？'
+           )
+           embed.set_image(url='https://i.imgur.com/JB3Xx7U.jpg')
+
+           send_msg(message.channel,emb=embed)
 
 
     def require_input(self):
@@ -29,15 +35,26 @@ def exam_command_handler(channel: TextChannel, args: list, user_stack: list):
     s = listToString(args)
     if processingQuerySubjects(s) =='':
       user_stack.append(ExamInternalState())
-      send_msg(channel,text="講你要查的科目還有級分，我又不會通靈\n 來 再輸一次")
-      
+      embed = Embed(
+          title='我真的不知道怎麼辦',
+          description='講你要查的科目還有級分，我又不會通靈\n 來 再輸一次'
+      )
+      embed.set_image(url='https://i.imgur.com/D98CN5s.jpg')
+      send_msg(channel,emb=embed)
       return
     if processingQueryScore(s) == -1:
       user_stack.append(ExamInternalState())
-      send_msg(channel,text="輸入正常的級分，這樣Duke才有辦法幫你\n 來 再輸一次")
+      embed = Embed(
+          title='你懂什麼是浪漫嗎？',
+          description='你這樣亂回我訊息是浪漫嗎？'
+      )
+      embed.set_image(url='https://i.imgur.com/JB3Xx7U.jpg')
+      send_msg(channel,emb=embed)
       return
 
-    
+    random.seed(time.time())
+    if random.choice([True, False]):
+        send_ad(channel, '找到最浪漫的落點')
     embed=discord.Embed(title="歡迎收看浪漫Duke，幫你找到屬於你的落點", color=0xffb8f7)
     embed.set_author(name="浪漫Duke", icon_url="https://media.discordapp.net/attachments/874841739792355363/876105436275826708/unknown.png")
     embed.add_field(name="累積人數:", value=f'{get(processingQuerySubjects(s),processingQueryScore(s))}\n', inline=False)
@@ -47,15 +64,33 @@ def exam_command_handler(channel: TextChannel, args: list, user_stack: list):
     send_msg(channel,emb=embed)
 #查校系(目前只有寫109的NTU))))
 def major_command_handler(channel: TextChannel, args: list, user_stack: list):
-    s = listToString(args[1]).replace(" ","")
+    # duke 查學冊 123 456
+    s = listToString(args).replace(" ","").replace(args[0], "")
+    if len(s) == 0:
+      embed = Embed(
+          title='你懂什麼是浪漫嗎？',
+          description=f'你這樣亂回我訊息是浪漫嗎？請在{args[0]}後面加上你要查的校系'
+      )
+      embed.set_image(url='https://i.imgur.com/JB3Xx7U.jpg')
+      send_msg(channel,emb=embed)
+      return
     print(s)
+    random.seed(time.time())
+    if random.choice([True, False]):
+        send_ad(channel, '考上第一志願')
     embed=discord.Embed(title="歡迎收看浪漫Duke，幫你找到屬於你的落點", description="--目前為demo板，只有用出台大109年的資料",color=0xffb8f7)
     embed.set_author(name="浪漫Duke", icon_url="https://media.discordapp.net/attachments/874841739792355363/876105436275826708/unknown.png")
     con = ntu109["系"].str.contains(s)
     data = ntu109[con]
     print(data.shape[0])
     if data.shape[0] == 0:
-      send_msg(channel,"找不到對應的校系")
+      #blob:https://imgur.com/058a7564-b476-4905-ab0b-780aed43296f
+      embed = Embed(
+          title='你查的校系不夠浪漫，Duke沒聽過！',
+          description=f'找不到對應的校系'
+      )
+      embed.set_image(url='https://i.imgur.com/JB3Xx7U.jpg')
+      send_msg(channel,emb=embed)
       return
     for i in range(data.shape[0]):
       seri = data.iloc(0)[i]
@@ -105,7 +140,7 @@ def processingQueryScore(s:str) -> int:
 
 def get(s:str,score:int) ->int:
     if score == -1:
-      return;
+      return
     '''
     回傳累積人數
     '''
