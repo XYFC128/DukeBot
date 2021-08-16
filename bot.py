@@ -4,6 +4,7 @@ from utils import *
 from romantic import *
 from exam import *
 from todo import *
+from mix import *
 from discord import Guild, Message, TextChannel
 from discord.ext import commands
 from dislash import InteractionClient
@@ -44,8 +45,9 @@ def main_command_handler(message: Message):
         '查學測' : exam_command_handler,
         '查校系' : major_command_handler,
         'todo' : todo_command_handler,
+        '浪漫因子' : mix_command_handler,
         '看天氣' : weather_command_handler,
-        '找地點': find_place_handler
+        '找地點': find_place_handler 
     }
     cmds = message.content.split(' ')
     if len(cmds) < 2 or not cmds[1] in command_handlers:
