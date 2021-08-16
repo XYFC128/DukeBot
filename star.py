@@ -5,6 +5,7 @@ import discord
 from discord import Embed
 import requests
 import time
+import shutil
 t = time.time()
 
 r = requests.get(
@@ -76,20 +77,61 @@ def get_embed(chan,token:int,stack:list)->Embed:
     if token == -1:
         send_msg(chan,"那是哪裡?")
         return
+    
+        '''
+    r = requests.get("https://opendata.cwb.gov.tw/fileapi/opendata/MSC/O-A0058-003.png",stream=True)
+    if r.status_code == 200:
+        with open("data/test.png", 'wb') as f:
+            r.raw.decode_content = True
+            shutil.copyfileobj(r.raw, f)
+            print("圖片寫入")
+            '''
     MinT = 4 #最低溫
     RH = 2 #相對溼度
     PoP = 9 #降雨機率
     embed=discord.Embed(title="歡迎收看浪漫Duke，帶你浪漫看星星",description=data[token]["locationName"])
+    embed.set_image(url="https://opendata.cwb.gov.tw/fileapi/opendata/MSC/O-A0058-003.png")
+    send_msg(chan,emb = embed)
     temp = data[token]["weatherElement"]
     for i in range(7):
-        
-        embed.add_field(name="日期", value=temp[RH]["time"][i]["startTime"][5:10], inline=False)
-        embed.add_field(name="最低溫❄", value=f'{temp[MinT]["time"][i]["elementValue"]["value"]}度', inline=True)
+        #temp[RH]["time"][i]["startTime"][5:10]
+        if i <3:
+            color = set_color(RH=eval(temp[RH]["time"][i]["elementValue"]["value"]),rain = eval(temp[PoP]["time"][i]["elementValue"]["value"]))
+        else :
+            color = set_color(eval(temp[RH]["time"][i]["elementValue"]["value"]))
+        sub_embed = discord.Embed(title=temp[RH]["time"][i]["startTime"][5:10],color=color)
+        sub_embed.add_field(name="最低溫❄", value=f'{temp[MinT]["time"][i]["elementValue"]["value"]}度', inline=True)
         if i <3 :
-            embed.add_field(name="降雨機率☔", value=f'{temp[PoP]["time"][i]["elementValue"]["value"]}%', inline=True)
-        embed.add_field(name="相對溼度💧", value=f'{temp[RH]["time"][i]["elementValue"]["value"]}%', inline=True)
+            sub_embed.add_field(name="降雨機率☔", value=f'{temp[PoP]["time"][i]["elementValue"]["value"]}%', inline=True)
+        sub_embed.add_field(name="相對溼度💧", value=f'{temp[RH]["time"][i]["elementValue"]["value"]}%', inline=True)
+        send_msg(chan,emb = sub_embed)
     #send_msg(chan,"???????")
-    send_msg(chan,emb = embed)
+
+def set_color(RH:int,rain:int = -1)->int:
+    if rain!= -1:
+        hum = (RH+rain)/2
+    else:
+        hum = RH
+    if hum >90 :
+        return 0x000000
+    elif hum >80 :
+        return 0x7d7d7d
+    elif hum >70:
+        return 0xb8b8b8
+    elif hum >60:
+        return 0xededed
+    elif hum >50:
+        return 0xffffff
+    elif hum >40:
+        return 0xffcccc
+    elif hum >30:
+        return 0xffa8a8
+    elif hum >20:
+        return 0xf68383d
+    elif hum >10:
+        return 0xff6b6b       
+    else :
+        return 0xff4747     
 def weather_command_handler(channel: TextChannel, args: list, user_stack: list):
     s = ''.join(args)
     s = s.replace("看天氣", "")
@@ -116,4 +158,12 @@ def find_place_handler(channel: TextChannel, args: list, user_stack: list):
             string += (i+"\n")
     embed.add_field(name="地點", value=string, inline=True)
     send_msg(channel,emb=embed)
-    
+'''  
+def weather_filter_handler(channel: TextChannel, args: list, user_stack: list):
+
+    s = ''.join(args)
+    s = s.replace("天氣篩選", "")
+    embed=discord.Embed(title="duke 天氣篩選", description="月象")
+    embed.set_image(url="https://media.discordapp.net/attachments/874841739792355363/876679072724439130/moonface_202108.jpg?width=496&height=609")
+    send_msg(channel,emb =embed)
+'''
