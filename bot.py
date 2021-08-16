@@ -70,7 +70,6 @@ def user_msg_handler(message: Message):
     """
     user = message.author
     stack = get_user_stack(user)
-    todo_list = get_todo_list(message.author)
     if len(stack) == 0:
         return
 
