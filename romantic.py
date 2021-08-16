@@ -1,5 +1,5 @@
 from utils import *
-import json
+import random
 import xml.etree.ElementTree as ET
 
 roman_data = ET.parse('data/romantic_states.xml')
@@ -70,7 +70,8 @@ class RomanticState:
 
     def run(self, message: Message, user_stack: list):
         if self.ad != None:
-            send_ad(message.channel, self.ad)
+            if random.choice([True, True, False]):
+                send_ad(message.channel, self.ad)
 
         if len(self.options) > 0:
             options = [opt for opt in self.options]
