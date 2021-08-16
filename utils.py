@@ -6,10 +6,7 @@ from dislash import MessageInteraction, SelectMenu, SelectOption
 
 def send_msg(destination, text='', emb=None):
     loop = asyncio.get_event_loop()
-    if emb == None:
-        asyncio.run_coroutine_threadsafe(destination.send(text), loop)
-    else:
-        asyncio.run_coroutine_threadsafe(destination.send(embed=emb), loop)
+    asyncio.run_coroutine_threadsafe(destination.send(text, embed=emb), loop)
 
 
 def print_help(ch: TextChannel, user, supported_commands={}):
@@ -58,16 +55,10 @@ class PrintState:
     def run(self, message: Message, user_stack=[]):
         if self.inter != None:
             loop = asyncio.get_event_loop()
-            if self.embed != None:
-                asyncio.run_coroutine_threadsafe(
-                    self.inter.reply(embed=self.embed),
-                    loop
-                )
-            else:
-                asyncio.run_coroutine_threadsafe(
-                    self.inter.reply(self.text),
-                    loop
-                )
+            asyncio.run_coroutine_threadsafe(
+                self.inter.reply(self.text, embed=self.embed),
+                loop
+            )
         else:
             send_msg(message.channel, self.text, emb=self.embed)
 

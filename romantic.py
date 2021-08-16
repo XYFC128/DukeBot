@@ -10,16 +10,49 @@ class RomanticState:
         self.node = cur_node
         displays = []
         options = {}
+        embed = None
         for child in self.node:
             if child.tag == 'display':
-                if child.attrib['type'] == 'normal':
-                    displays.append(child.text)
+                displays.append(child.text)
+            elif child.tag == 'embed':
+                attr = child.attrib
+                embed_dict = {}
+                for key in attr:
+                    if key == 'colour':
+                        embed_dict[key] = Colour(int(attr[key]))
+                    else:
+                        embed_dict[key] = attr[key]
+                
+                embed = Embed.from_dict(embed_dict)
+
+                for embed_element in child:
+                    attr = embed_element.attrib
+                    if embed_element.tag == 'footer':
+                        embed.set_footer(text=attr['text'], icon_url=attr['icon_url'])
+                    elif embed_element.tag == 'image':
+                        embed.set_image(url=attr['url'])
+                    elif embed_element.tag == 'thumbnail':
+                        embed.set_thumbnail(url=attr['url'])
+                    elif embed_element.tag == 'author':
+                        embed.set_author(
+                            name=attr['name'],
+                            url=attr['url'],
+                            icon_url=attr['icon_url']
+                        )
+                    elif embed_element.tag == 'field':
+                        embed.add_field(
+                            name=attr['name'],
+                            value=attr['value'],
+                            inline=(attr['inline'].lower() in ['true', '1'])
+                        )
+
             elif child.tag == 'node':
                 options[child.attrib['name']] = child
         
-        self.displays = displays
+        self.display = '\n'.join(displays)
         self.options = options
         self.inter = inter
+        self.embed = embed
 
     def selected_handler(self, inter, stack):
         selected = [option.label for option in inter.select_menu.selected_options]
@@ -33,15 +66,7 @@ class RomanticState:
             options = [opt for opt in self.options]
             user_stack.append(MenuState('輸入選單：', options, self.selected_handler))
 
-        self.displays = self.displays[::-1]
-        if len(self.displays) > 0:
-            first_display = None
-            if self.inter != None:
-                first_display = self.displays.pop()
-            for display in self.displays:
-                user_stack.append(PrintState(display))
-            if first_display != None:
-                user_stack.append(PrintState(first_display, inter=self.inter))
+        user_stack.append(PrintState(self.display, embed=self.embed, inter=self.inter))
 
 
     def require_input(self):
