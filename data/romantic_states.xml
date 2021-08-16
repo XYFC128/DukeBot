@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<node name="問題類型">
+    <display type="normal">請輸入問題類型</display>
+    <node name="精進">
+        <display type="normal">請輸入對象狀態</display>
+        <node name="有">
+            <display type="normal">那你要紳士決鬥還是Hide on Bush?</display>
+            <node name="紳士決鬥">
+                <display type="normal">紳士決鬥</display>
+            </node>
+            <node name="Hide on Bush + 華麗的一擊">
+                <display type="normal">Hide on Bush + 華麗的一擊</display>
+            </node>
+        </node>
+        <node name="無">
+             <display type="normal">Duke為你安排：浪漫突進</display>
+        </node>
+    </node>
+    <node name="告白">
+        <display type="normal">你跟對方認識多久了？</display>
+        <node name="10年">
+            <display type="normal">哀呀！你這種就是標準的『十年工具人』。</display>
+            <display type="normal">Duke為你精心策劃了一場告白行動</display>
+            <display type="normal">Duke 相信在你們相處這麼長的時間中一定已經建立了慎後的感情</display>
+            <display type="normal">這時你只要打電話給對方然後裝死等他來跟你告白</display>
+        </node>
+        <node name="11年">
+            <display type="normal">看來只好搬出Duke的壓箱寶了——絕對浪漫經典不敗告白公式</display>
+            <display type="normal">來，在對方面前下跪，等他來親你就成功了</display>
+        </node>
+        <node name="其他">
+            <display type="normal">這時候就要用『科學浪漫』了</display>
+            <display type="normal">經過Duke多年的研究</display>
+            <display type="normal">想求姻緣的人都會去月老廟，因此我們只要去月老廟假裝是廟方工作人員跟對方要Line就可以輕鬆要到他的Line了</display>
+        </node>
+    </node>
+    <node name="找對象">
+        <display type="normal">你想用什麼媒介呢？</display>
+        <node name="月老廟">
+            <display type="normal">經過Duke多年的研究</display>
+            <display type="normal">想求姻緣的人都會去月老廟，因此我們只要去月老廟假裝是廟方工作人員跟對方要Line就可以輕鬆要到他的Line了</display>
+            <display type="normal">科學浪漫！</display>
+        </node>
+        <node name="Line">
+            <display type="normal">你這樣浪漫嗎？</display>
+            <display type="normal">用賴有比較快嗎？見面了嗎？有 Face to Face 嗎？</display>
+            <display type="normal">Duke 建議還是使用更先進的媒介：月老廟</display>
+        </node>
+        <node name="Tinder">
+            <display type="normal">你這樣浪漫嗎？</display>
+            <display type="normal">用 Tinder 有比較快嗎？見面了嗎？有 Face to Face 嗎？</display>
+            <display type="normal">Duke 建議還是使用更先進的媒介：月老廟</display>
+        </node>
+    </node>
+</node>
