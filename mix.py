@@ -14,9 +14,8 @@ mainshop = [
     {"name":"浪漫4","price":100000,"description":"這是浪漫4"}]
 
 class MixState:
-    def init(self, embed) -> None:
+    def __init__(self, embed) -> None:
         self.embed = embed
-        return
 
     def run(self, message: Message, user_stack: list):
         args = message.content.split(" ")
@@ -92,5 +91,5 @@ def shop(ctx):
         em.add_field(name=name,value=f'{price} | {desc}')
     ctx.send(embed=em)
 
-def mix_command_handler(channel: TextChannel, args: list, user_stack: list):
+def mix_command_handler(message: Message, args: list, user_stack: list):
     user_stack.append(MixState)
