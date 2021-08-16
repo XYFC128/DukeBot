@@ -47,7 +47,8 @@ def main_command_handler(message: Message):
         'todo' : todo_command_handler,
         '浪漫因子' : mix_command_handler,
         '看天氣' : weather_command_handler,
-        '找地點': find_place_handler 
+        '找地點': find_place_handler,
+        '天氣篩選': weather_filter_handler
     }
     cmds = message.content.split(' ')
     if len(cmds) < 2 or not cmds[1] in command_handlers:

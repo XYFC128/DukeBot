@@ -77,15 +77,6 @@ def get_embed(chan,token:int,stack:list)->Embed:
     if token == -1:
         send_msg(chan,"那是哪裡?")
         return
-    
-        '''
-    r = requests.get("https://opendata.cwb.gov.tw/fileapi/opendata/MSC/O-A0058-003.png",stream=True)
-    if r.status_code == 200:
-        with open("data/test.png", 'wb') as f:
-            r.raw.decode_content = True
-            shutil.copyfileobj(r.raw, f)
-            print("圖片寫入")
-            '''
     MinT = 4 #最低溫
     RH = 2 #相對溼度
     PoP = 9 #降雨機率
@@ -158,12 +149,38 @@ def find_place_handler(channel: TextChannel, args: list, user_stack: list):
             string += (i+"\n")
     embed.add_field(name="地點", value=string, inline=True)
     send_msg(channel,emb=embed)
-'''  
 def weather_filter_handler(channel: TextChannel, args: list, user_stack: list):
-
+    
     s = ''.join(args)
-    s = s.replace("天氣篩選", "")
-    embed=discord.Embed(title="duke 天氣篩選", description="月象")
+    
+    embed=discord.Embed(title="浪漫Duke 幫你找出最棒的時機")
     embed.set_image(url="https://media.discordapp.net/attachments/874841739792355363/876679072724439130/moonface_202108.jpg?width=496&height=609")
+    embed.set_footer(text="月象參考圖")
+    s = s.replace("天氣篩選", "")
+    t = re.sub("\D","",s)
+    Threshold = 20
+    if len(t)>0:
+        Threshold = int(t)
+    t = 0
+    embed.add_field(name = "濕度閥值",value=Threshold)
+    
+    for i in range(26):
+        #地點
+        for j in range(7):
+            if int(data[i]["weatherElement"][2]["time"][j]["elementValue"]["value"])<Threshold:
+                
+                embed.add_field(name=data[i]["locationName"], value=data[i]["weatherElement"][2]["time"][j]["startTime"][5:10], inline=False)
+                embed.add_field(name="相對溼度💧", value=data[i]["weatherElement"][2]["time"][j]["elementValue"]["value"], inline=True)
+                if j<3:
+                    embed.add_field(name="降雨機率☔", value=data[i]["weatherElement"][9]["time"][j]["elementValue"]["value"], inline=True)
+                
+                t +=1
+    if t ==0:
+        embed.add_field(name="找不到適合的狀況",value=f"相對濕度皆大於{Threshold}%",inline=False)
     send_msg(channel,emb =embed)
-'''
+    print(t)
+    if t ==0:
+        fail_embed=discord.Embed(title="雖然目前沒有適合的時機，但觀星最重要的精華就是要忍耐，忍到那個最佳時機，在這之前絕對絕對都要忍住")
+        fail_embed.set_image(url="https://images-ext-2.discordapp.net/external/ZH-jodEJvRwFmOUEgwjerKA5yn_H4O-xr19zenMPIhg/https/i.imgur.com/to1S7ft.jpg?width=660&height=371")
+        send_msg(channel,emb =fail_embed)
+
