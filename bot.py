@@ -45,7 +45,7 @@ def main_command_handler(message: Message):
         '查校系' : major_command_handler,
         'todo' : todo_command_handler,
         '看天氣' : weather_command_handler,
-        '找地點': find_place_handler
+        '找地點': find_place_handler,
         'todo' : todo_command_handler
     }
     cmds = message.content.split(' ')
