@@ -1,3 +1,4 @@
+import time
 from utils import *
 import random
 import xml.etree.ElementTree as ET
@@ -70,7 +71,8 @@ class RomanticState:
 
     def run(self, message: Message, user_stack: list):
         if self.ad != None:
-            if random.choice([True, True, False]):
+            random.seed(time.time())
+            if random.choice([True, False]):
                 send_ad(message.channel, self.ad)
 
         if len(self.options) > 0:

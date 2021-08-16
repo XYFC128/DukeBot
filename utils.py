@@ -1,5 +1,6 @@
 import asyncio
 import random
+import time
 from typing import Callable
 from discord import *
 from dislash import MessageInteraction, SelectMenu, SelectOption
@@ -11,7 +12,7 @@ def send_msg(destination, text='', emb=None):
 
 
 def send_ad(destination, want=''):
-    
+    random.seed(time.time())
     ad_contexes = [f'''
 想知道如何{want}嗎？馬上訂閱 Duke 的 Channel
 開啟小鈴鐺🔔
