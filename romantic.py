@@ -11,9 +11,12 @@ class RomanticState:
         displays = []
         options = {}
         embed = None
+        ad = None
         for child in self.node:
             if child.tag == 'display':
                 displays.append(child.text)
+            if child.tag == 'ad':
+                ad = child.text
             elif child.tag == 'embed':
                 attr = child.attrib
                 embed_dict = {}
@@ -56,6 +59,7 @@ class RomanticState:
         self.options = options
         self.inter = inter
         self.embed = embed
+        self.ad = ad
 
     def selected_handler(self, inter, stack):
         selected = [option.label for option in inter.select_menu.selected_options]
@@ -65,6 +69,9 @@ class RomanticState:
 
 
     def run(self, message: Message, user_stack: list):
+        if self.ad != None:
+            send_ad(message.channel, self.ad)
+
         if len(self.options) > 0:
             options = [opt for opt in self.options]
             user_stack.append(MenuState(self.display, options, self.selected_handler, embed=self.embed, inter=self.inter))
