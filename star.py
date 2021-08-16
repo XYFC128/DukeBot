@@ -130,7 +130,8 @@ def weather_command_handler(channel: TextChannel, args: list, user_stack: list):
     get_embed(chan=channel,token = find_place_number(s),stack = user_stack)
 
 def find_place_handler(channel: TextChannel, args: list, user_stack: list):
-
+    if random.choice([True, False,False]):
+        send_ad(channel, '知道浪漫Duke的私房景點')
     s = ''.join(args)
     s = s.replace("找地點", "")
     string = "" 
@@ -152,7 +153,8 @@ def find_place_handler(channel: TextChannel, args: list, user_stack: list):
 def weather_filter_handler(channel: TextChannel, args: list, user_stack: list):
     
     s = ''.join(args)
-    
+    if random.choice([True, False,False]):
+        send_ad(channel, '找到最適合看星星的時機')
     embed=discord.Embed(title="浪漫Duke 幫你找出最棒的時機")
     embed.set_image(url="https://media.discordapp.net/attachments/874841739792355363/876679072724439130/moonface_202108.jpg?width=496&height=609")
     embed.set_footer(text="月象參考圖")
