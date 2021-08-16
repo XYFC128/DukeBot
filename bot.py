@@ -1,8 +1,9 @@
 #!/usr/bin/python3
-
+from star import *
 from utils import *
 from romantic import *
 from exam import *
+from todo import *
 from discord import Guild, Message, TextChannel
 from discord.ext import commands
 from dislash import InteractionClient
@@ -39,9 +40,13 @@ def main_command_handler(message: Message):
         '說你好' : say_hello,
         'STFU': clear_stack,
         '閉嘴': clear_stack,
-        '找浪漫' : romantic_command_handler,
+        '教我' : romantic_command_handler,
         '查學測' : exam_command_handler,
-        '查校系' : major_command_handler
+        '查校系' : major_command_handler,
+        'todo' : todo_command_handler,
+        '看天氣' : weather_command_handler,
+        '找地點': find_place_handler
+
     }
     cmds = message.content.split(' ')
     if len(cmds) < 2 or not cmds[1] in command_handlers:
@@ -49,6 +54,7 @@ def main_command_handler(message: Message):
     else:
         hdlr = command_handlers[cmds[1]]
         stack = get_user_stack(message.author)
+        todo_list = get_todo_list(message.author)
         hdlr(message.channel, cmds[1:], stack)
         clear_no_input_states(message, stack)
 
@@ -59,6 +65,7 @@ def user_msg_handler(message: Message):
     """
     user = message.author
     stack = get_user_stack(user)
+    todo_list = get_todo_list(message.author)
     if len(stack) == 0:
         return
 
