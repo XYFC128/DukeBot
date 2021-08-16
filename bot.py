@@ -57,10 +57,7 @@ def main_command_handler(message: Message):
         hdlr = command_handlers[cmds[1]]
         stack = get_user_stack(message.author)
         todo_list = get_todo_list(message.author)
-        if cmds[1] == '浪漫因子':
-            hdlr(message, cmds[1:], stack)
-        else:
-            hdlr(message.channel, cmds[1:], stack)
+        hdlr(message.channel, cmds[1:], stack)
         clear_no_input_states(message, stack)
 
 
