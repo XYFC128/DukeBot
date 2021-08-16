@@ -18,8 +18,8 @@ class RomanticState:
                 attr = child.attrib
                 embed_dict = {}
                 for key in attr:
-                    if key == 'colour':
-                        embed_dict[key] = Colour(int(attr[key]))
+                    if key == 'color':
+                        embed_dict[key] = int(attr[key], base=16)
                     else:
                         embed_dict[key] = attr[key]
                 
