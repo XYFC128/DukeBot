@@ -14,21 +14,22 @@ mainshop = [
     {"name":"浪漫4","price":100000,"description":"這是浪漫4"}]
 
 class MixState:
-    def __init__(self) -> None:
-        pass
+    def init(self, embed) -> None:
+        self.embed = embed
+        return
 
-    def run(self, message: Message, args: list, user_stack: list):
+    def run(self, message: Message, user_stack: list):
+        args = message.content.split(" ")
         embed = discord.Embed(
         title="歡迎收看浪漫Duke，帶你找到屬於你的浪漫因子",
-        url="https://www.youtube.com/channel/UCzjNxGvrqfxL9KGkObbzrmg/about",
-        description="馬上訂閱 Duke 的 Channel，開啟小鈴鐺，分享!\n\n想要來點浪漫因子嗎?輸入duke 浪漫因子 🫀吧!想要查看自己擁有多少浪漫因子?輸入duke 存摺吧!\n\n想要讓自己更浪漫嗎?輸入duke 商店來到浪漫商店吧!",
+        url="https://www.youtube.com/channel/UCzjNxGvrqfxL9KGkObbzrmg",
+        description="馬上訂閱 Duke 的 Channel，開啟小鈴鐺，分享!\n\n想要來點浪漫因子嗎?輸入duke 浪漫因子 :anatomical_heart:吧!想要查看自己擁有多少浪漫因子?輸入duke 存摺吧!\n\n想要讓自己更浪漫嗎?輸入duke 商店來到浪漫商店吧!",
         color=0xFF95CA)
-        send_msg(emb=embed)
-
+        user_stack.append(PrintState(text="", embed=self.embed, inter=None))
         if "存摺" == args[1]:
             if open_account(user):
                 balance(message)
-        if "🫀" == args[1]:
+        if ":anatomical_heart:" == args[1]:
             earn(message)
         if "商店" == args[1]:
             shop(message)
@@ -91,7 +92,5 @@ def shop(ctx):
         em.add_field(name=name,value=f'{price} | {desc}')
     ctx.send(embed=em)
 
-def mix_command_handler(message: Message, args: list, user_stack: list):
-    user_stack.append(MixState())
-    
-        
+def mix_command_handler(channel: TextChannel, args: list, user_stack: list):
+    user_stack.append(MixState)
