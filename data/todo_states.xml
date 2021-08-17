@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <node name="todo功能">
-    <display type="normal">請選擇todo功能</display>
     <node name="新增/編輯待辦事項">
-    <!-- todo_correspondence = {"名稱":0, "截止日期與時間":1, "重要程度":2, "其他資訊":3} -->
-    <!-- 請輸入該待辦事項__名稱__, 請輸入該待辦事項__截止日期與時間__ （格式：yyyy-MM-dd HH:mm）, 請點選該待辦事項__重要程度__ （10最重要）, 請輸入該待辦事項__其他資訊__ （無限制格式） -->
-        <input name="名稱">請輸入該待辦事項__名稱__</input>
-        <input name="截止日期與時間">請輸入該待辦事項__截止日期與時間__ （格式：yyyy-MM-dd HH:mm）</input>
-        <input name="重要程度">請點選該待辦事項__重要程度__ （10最重要）</input>
-        <input name="其他資訊">請輸入該待辦事項__其他資訊__ （無限制格式）</input>
+        <input>請輸入該待辦事項__名稱__</input>
+        <input>請輸入該待辦事項__截止日期與時間__ （格式：yyyy-MM-dd HH:mm；無截止日期與時間：x；照舊：略）</input>
+        <input>請點選該待辦事項__重要程度__ （0~10整數；10最重要；照舊：略）</input>
+        <input>請輸入該待辦事項__其他資訊__ （無限制格式；照舊：略）</input>
         <display type="normal">**更新成功**</display>
     </node>
     <node name="修改完成狀態">
-        <display type="todo_list">請選擇完成的待辦事項</display>
+        <input name="complete">請輸入已完成待辦事項名稱</input>
     </node>
     <node name="顯示所有待辦事項">
-        <display type="embed">print all</display>
+        <display type="embed">print_embed</display>
+    </node>
+    <node name="顯示所有已完成待辦事項">
+        <display type="embed">print_completed</display>
     </node>
 </node>
