@@ -37,6 +37,9 @@ class MixState:
         if "買" == args[0] and len(args) == 3:
             if open_account(user, user_stack):
                 buy(user, user_stack, args[1], int(args[2]))
+        if "賣" == args[0] and len(args) == 3:
+            if open_account(user, user_stack):
+                sell(user, user_stack, args[1], int(args[2]))
         if "排行榜" == args[0] and len(args) == 2:
             leaderboard(user, user_stack, int(args[1]))
 
@@ -45,7 +48,7 @@ class MixState:
 
 def get_user_data(user):
     if user.id not in user_data:
-        user_data[user.id] = {"name": user.name}
+        user_data[user.id] = {"name": user.name, "bag": []}
     return user_data[user.id]
 
 def open_account(user, user_stack):
@@ -84,10 +87,7 @@ def shop(user, user_stack):
 def bag(user, user_stack):
     data = get_user_data(user)
 
-    if "bag" not in data:
-        data["bag"] = []
-        em = discord.Embed(title=f'{user.name}的浪漫包包💗', color= 0xFF95CA, description="你的包包空無一物......")
-    elif data["bag"] == []: 
+    if data["bag"] == []: 
         em = discord.Embed(title=f'{user.name}的浪漫包包💗', color= 0xFF95CA, description="你的包包空無一物......")
     else:
         em = discord.Embed(title=f'{user.name}的浪漫包包💗', color= 0xFF95CA, description="")
@@ -119,7 +119,7 @@ def buy_this(user, item_name, amount):
     for thing in data["bag"]:
         n = thing["item"]
         if n == item_name:
-            new_amt = item["amount"] + amount
+            new_amt = thing["amount"] + amount
             thing["amount"] = new_amt
             item_in_bag = True
             break
@@ -129,7 +129,7 @@ def buy_this(user, item_name, amount):
     data["wallet"] -= cost
     return [True, "Done"]   
 
-def buy(user, user_stack, item, amount):
+def buy(user, user_stack, item, amount=1):
     result = buy_this(user, item, amount)
     if not result[0]:
         if result[1] == 1:
@@ -138,6 +138,49 @@ def buy(user, user_stack, item, amount):
             user_stack.append(PrintState(text=f"你這樣浪漫嗎?妳的浪漫因子無法兌換{amount}個{item}，快去收集浪漫因子吧!"))
     else:
         user_stack.append(PrintState(text=f"恭喜你獲得{amount}個{item}!!!"))
+
+def sell_this(user, item_name, amount, price=None):
+    data = get_user_data(user)
+    
+    name = None
+    for item in mainshop:
+        if item["name"] == item_name:
+            name = item["name"]
+            if price == None:
+                price = int(0.8 * item["price"])
+            break
+    if name == None:
+        return [False, 1]
+
+    cost = price * amount
+    item_in_bag = False
+    for thing in data["bag"]:
+        n = thing["item"]
+        if n == item_name:
+            new_amt = thing["amount"] - amount
+            if new_amt < 0:
+                return [False, 2]
+
+            thing["amount"] = new_amt
+            item_in_bag = True
+            break
+    if not item_in_bag:
+        return [False, 3]
+
+    data["wallet"] += cost
+    return [True, "Done"]
+
+def sell(user, user_stack, item, amount=1):
+    result = sell_this(user, item, amount)
+    if not result[0]:
+        if result[1] == 1:
+            user_stack.append(PrintState(text="Duke沒有這件商品"))
+        if result[1] == 2:
+            user_stack.append(PrintState(text=f"你的包包裡沒有{amount}個{item}，快去浪漫商店買些東西吧!"))
+        if result[1] == 3:
+            user_stack.append(PrintState(text=f"你的包包裡沒有{item}，快去浪漫商店買些東西吧!"))
+    else:
+        user_stack.append(PrintState(text=f"你成功賣出了{amount}個{item}"))
 
 def leaderboard(user, user_stack, n):
     leader_board = {}
