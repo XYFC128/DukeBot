@@ -1,5 +1,7 @@
 import time
 from utils import *
+from mix import get_user_data
+from action import run_action
 import random
 import xml.etree.ElementTree as ET
 
@@ -13,6 +15,7 @@ class RomanticState:
         options = {}
         embed = None
         ad = None
+        require = None
         for child in self.node:
             if child.tag == 'display':
                 displays.append(child.text)
@@ -55,12 +58,15 @@ class RomanticState:
 
             elif child.tag == 'node':
                 options[child.attrib['name']] = child
+            elif child.tag == 'require':
+                require = child.text
         
         self.display = '\n'.join(displays)
         self.options = options
         self.inter = inter
         self.embed = embed
         self.ad = ad
+        self.require = require
 
     def selected_handler(self, inter, stack):
         selected = [option.label for option in inter.select_menu.selected_options]
@@ -74,6 +80,27 @@ class RomanticState:
             random.seed(time.time())
             if random.choice([True, False]):
                 send_ad(message.channel, self.ad)
+
+        if self.require != None and self.inter != None:
+            data = get_user_data(self.inter.author)
+            has_required = False
+            if data != None and len(data['bag']) > 0:
+                for item in data['bag']:
+                    if item["item"] == self.require and int(item['amount']) > 0:
+                        has_required = True
+                        break
+
+            if not has_required:
+                goal = self.node.attrib['name']
+                embed = Embed(
+                    title='提示',
+                    description=f'想要達成{goal}需要{self.require}喔！趕快輸入duke 浪漫因子 前往浪漫商店購買吧！',
+                    colour=0x00fbff
+                )
+                user_stack.append(PrintState(embed=embed))
+            else:
+                run_action(message.channel, self.inter.author, self.require, user_stack)
+
 
         if len(self.options) > 0:
             options = [opt for opt in self.options]

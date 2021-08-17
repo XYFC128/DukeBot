@@ -8,6 +8,7 @@
             <display>太好了，Duke 這邊剛好有幾招，你比較想要那一招?🧰</display>
             <node name="紳士決鬥🐃">
                 <ad>追到有男朋友的女生💞</ad>
+                <require>手套</require>
                 <display>來讓 Duke 教你一個觀念🍑</display>
                 <display>在浪漫的世界裡，沒分有道德和不道德的🧘‍♂</display>
                 <display>只有浪漫❤️和更浪漫💖的人</display>
