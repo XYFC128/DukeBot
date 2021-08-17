@@ -46,7 +46,7 @@ def exam_command_handler(channel: TextChannel, args: list, user_stack: list):
       user_stack.append(ExamInternalState())
       embed = Embed(
           title='你懂什麼是浪漫嗎？',
-          description='你這樣亂回我訊息是浪漫嗎？\n再W輸入一次'
+          description='你這樣亂回我訊息是浪漫嗎？\n再輸入一次'
       )
       embed.set_image(url='https://i.imgur.com/JB3Xx7U.jpg')
       send_msg(channel,emb=embed)
