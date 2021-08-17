@@ -46,7 +46,7 @@ def exam_command_handler(channel: TextChannel, args: list, user_stack: list):
       user_stack.append(ExamInternalState())
       embed = Embed(
           title='你懂什麼是浪漫嗎？',
-          description='你這樣亂回我訊息是浪漫嗎？'
+          description='你這樣亂回我訊息是浪漫嗎？\n再W輸入一次'
       )
       embed.set_image(url='https://i.imgur.com/JB3Xx7U.jpg')
       send_msg(channel,emb=embed)
@@ -55,7 +55,7 @@ def exam_command_handler(channel: TextChannel, args: list, user_stack: list):
     random.seed(time.time())
     if random.choice([True, False]):
         send_ad(channel, '找到最浪漫的落點')
-    embed=discord.Embed(title="歡迎收看浪漫Duke，幫你找到屬於你的落點", color=0xffb8f7)
+    embed=discord.Embed(title="歡迎收看浪漫Duke，幫你找到屬於你的落點",description=f"查詢科目: {processingQuerySubjects(s)}", color=0xffb8f7)
     embed.set_author(name="浪漫Duke", icon_url="https://media.discordapp.net/attachments/874841739792355363/876105436275826708/unknown.png")
     embed.add_field(name="累積人數:", value=f'{get(processingQuerySubjects(s),processingQueryScore(s))}\n', inline=False)
     embed.add_field(name="109年對應級分", value=f'{search(109,processingQuerySubjects(s),get(processingQuerySubjects(s),processingQueryScore(s)))}\n', inline=True)

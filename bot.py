@@ -22,7 +22,6 @@ def get_user_stack(user) -> list:
 
 def clear_no_input_states(message: Message, stack: list):
     if len(stack) == 0:
-        print("clear_no_input_states and len(stack) == 0")
         return
 
     while len(stack) > 0 and not stack[-1].require_input():
@@ -71,7 +70,6 @@ def user_msg_handler(message: Message):
     stack = get_user_stack(user)
     if len(stack) == 0:
         keyword_command_handler(message)
-        print("user_msg_handler and len(stack) == 0")
         return
 
     cur_state = stack.pop()

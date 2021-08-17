@@ -6,6 +6,7 @@ from discord import Embed
 import requests
 import time
 import shutil
+import random
 t = time.time()
 
 r = requests.get(
@@ -60,6 +61,8 @@ def get_name_list(s:str="all")->list:
     return l
 
 def find_place_number(s:str)->int:
+    if s == "":
+        return random.randint(0,25)
     s = s.replace("台","臺")
     for i in range(26):
         if s in data[i]["locationName"]:
