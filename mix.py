@@ -1,12 +1,10 @@
 import discord
 from discord import Guild, Message, TextChannel
-import json
 import random
 
 from utils import *
-
-with open("data/user_data.json", "r") as f:
-    user_data = json.load(f)
+from user_data import get_all_users, get_user_bag, get_user_wallet, set_user_wallet
+from action import run_action, action_exist, got_action
 
 mainshop = [
     {"name":"LINE","price":0,"description":"新新人類所使用的通訊軟體"},
@@ -20,48 +18,48 @@ class MixState:
     def __init__(self) -> None:
         pass
 
+
     def run(self, message: Message, user_stack: list):
         args = message.content.split(" ")
         user = message.author
         if args[0] != "離開":
             user_stack.append(MixState())
             user_stack.append(PrintState(text="再來啊"))
+
         if "存摺" == args[0]:
             if open_account(user, user_stack):
                 balance(user, user_stack)
-        if "🫀" == args[0]:
+        elif "🫀" == args[0]:
             if open_account(user, user_stack):
                 earn(user, user_stack)
-        if "商店" == args[0]:
+        elif "商店" == args[0]:
             shop(user, user_stack)
-        if "包包" == args[0]:
+        elif "包包" == args[0]:
             bag(user, user_stack)
-        if "買" == args[0] and len(args) == 3:
+        elif "買" == args[0] and len(args) == 3:
             if open_account(user, user_stack):
                 buy(user, user_stack, args[1], int(args[2]))
-        if "賣" == args[0] and len(args) == 3:
+        elif "賣" == args[0] and len(args) == 3:
             if open_account(user, user_stack):
                 sell(user, user_stack, args[1], int(args[2]))
-        if "搶" == args[0] and len(args) == 2:
-            if open_account(user, user_stack):
-                rob(user, user_stack, args[1])
-        if "送" == args[0] and len(args) == 3:
-            if open_account(user, user_stack):
-                send(user, user_stack, args[1], args[2])
-        if "排行榜" == args[0] and len(args) == 2:
+        elif "搶" == args[0] and len(args) == 2 and len(message.mentions) == 1:
+            rob(user, user_stack, message.mentions[0])
+        elif "送" == args[0] and len(args) == 3 and len(message.mentions) == 1:
+            print(args)
+            give(user, user_stack, message.mentions[0], args[2])
+        elif "排行榜" == args[0] and len(args) == 2:
             leaderboard(user, user_stack, int(args[1]))
+        elif "用"  == args[0] and len(args) == 2:
+            use(user, user_stack, message.channel, args[1])
 
     def require_input(self):
         return True
 
-def get_user_data(user):
-    if str(user.id) not in user_data:
-        user_data[str(user.id)] = {"name": user.name, "bag": []}
-    return user_data[str(user.id)]
 
 def open_account(user, user_stack):
+    '''
     data = get_user_data(user)
-
+    
     if "wallet" not in data:
         data["wallet"] = 0
         user_stack.append(PrintState(text="浪漫存摺建立完成!"))
@@ -69,25 +67,24 @@ def open_account(user, user_stack):
 
     with open('data/user_data.json', 'w') as f:
         json.dump(user_data, f)
+    '''
 
     return True
 
-def balance(user, user_stack):
-    data = get_user_data(user)
 
-    wallet_amt = data["wallet"]
+def balance(user, user_stack):
+    wallet_amt = get_user_wallet(user)
     em = discord.Embed(title=f'{user.name}的浪漫存摺👛', description=f'餘額: {wallet_amt}點', color=0xFF95CA)
     user_stack.append(PrintState(embed=em))
 
-def earn(user, user_stack):
-    data = get_user_data(user)
 
+def earn(user, user_stack):
     earnings = random.randrange(11)
     user_stack.append(PrintState(text=f'{user.mention}獲得了{earnings}點浪漫因子!!!'))
-    data["wallet"] += earnings
+    wallet = get_user_wallet(user)
+    wallet += earnings
+    set_user_wallet(user, wallet)
 
-    with open('data/user_data.json', 'w') as f:
-        json.dump(user_data, f)
 
 def shop(user, user_stack):
     em = discord.Embed(title="浪漫商店🏩", color= 0xFF95CA)
@@ -98,24 +95,22 @@ def shop(user, user_stack):
         em.add_field(name=name, value=f'{price} | {desc}')
     user_stack.append(PrintState(embed=em))
 
-def bag(user, user_stack):
-    data = get_user_data(user)
 
-    if data["bag"] == []: 
+def bag(user, user_stack):
+    bag = get_user_bag(user)
+    if len(bag) == 0: 
         em = discord.Embed(title=f'{user.name}的浪漫包包💗', color= 0xFF95CA, description="你的包包空無一物......")
     else:
         em = discord.Embed(title=f'{user.name}的浪漫包包💗', color= 0xFF95CA, description="")
 
-    bag = data["bag"]    
     for item in bag:
         name = item["item"]
         amount = item["amount"]
         em.add_field(name=name, value=amount)    
     user_stack.append(PrintState(embed=em))
 
+
 def buy_this(user, item_name, amount):
-    data = get_user_data(user)
-    
     name = None
     for item in mainshop:
         if item["name"] == item_name:
@@ -125,12 +120,15 @@ def buy_this(user, item_name, amount):
     if name == None:
         return [False, 1]
 
+    wallet = get_user_wallet(user)
+    bag = get_user_bag(user)
+
     cost = price * amount
-    if data["wallet"] < cost:
+    if wallet < cost:
         return [False, 2]
 
     item_in_bag = False
-    for thing in data["bag"]:
+    for thing in bag:
         n = thing["item"]
         if n == item_name:
             new_amt = thing["amount"] + amount
@@ -138,13 +136,10 @@ def buy_this(user, item_name, amount):
             item_in_bag = True
             break
     if not item_in_bag:
-        data["bag"].append({"item": item_name, "amount": amount})
+        bag.append({"item": item_name, "amount": amount})
     
-    data["wallet"] -= cost
-
-    with open('data/user_data.json', 'w') as f:
-        json.dump(user_data, f)
-
+    wallet -= cost
+    set_user_wallet(user, wallet)
     return [True, "Done"]   
 
 def buy(user, user_stack, item, amount=1):
@@ -155,11 +150,13 @@ def buy(user, user_stack, item, amount=1):
         if result[1] == 2:
             user_stack.append(PrintState(text=f"你這樣浪漫嗎?妳的浪漫因子無法兌換{amount}個{item}，快去收集浪漫因子吧!"))
     else:
+        item_intro = got_action(item)
+        if item_intro != None:
+            user_stack.append(item_intro)
         user_stack.append(PrintState(text=f"恭喜你獲得{amount}個{item}!!!"))
 
+
 def sell_this(user, item_name, amount, price=None):
-    data = get_user_data(user)
-    
     name = None
     for item in mainshop:
         if item["name"] == item_name:
@@ -170,9 +167,11 @@ def sell_this(user, item_name, amount, price=None):
     if name == None:
         return [False, 1]
 
+    bag = get_user_bag(user)
+
     cost = price * amount
     item_in_bag = False
-    for thing in data["bag"]:
+    for thing in bag:
         n = thing["item"]
         if n == item_name:
             new_amt = thing["amount"] - amount
@@ -185,12 +184,12 @@ def sell_this(user, item_name, amount, price=None):
     if not item_in_bag:
         return [False, 3]
 
-    data["wallet"] += cost
-
-    with open('data/user_data.json', 'w') as f:
-        json.dump(user_data, f)
+    wallet = get_user_wallet()
+    wallet += cost
+    set_user_wallet(user, wallet)
 
     return [True, "Done"]
+
 
 def sell(user, user_stack, item, amount=1):
     result = sell_this(user, item, amount)
@@ -204,74 +203,56 @@ def sell(user, user_stack, item, amount=1):
     else:
         user_stack.append(PrintState(text=f"你成功賣出了{amount}個{item}"))
 
-def send(user, user_stack, another, amount=None):
-    data = get_user_data(user)
-    
-    id_ = None
-    for name in user_data:
-        if another == user_data[name]["name"]:
-            id_ = name
-            break
-    if id_ == None:
-        return  
+def give(user, user_stack, another, amount=0):
+    tar_id = another.id
     
     if amount == None:
         user_stack.append(PrintState(text="請輸入你要送出的浪漫因子數量"))
         return
     if amount == 'all':
-        amount = data["wallet"]
+        amount = get_user_wallet(user)
     amount = int(amount)
-    if amount > data["wallet"]:
+    if amount > get_user_wallet(user):
         user_stack.append(PrintState(text="你這樣浪漫嗎?快去收集浪漫因子吧!"))
         return
     elif amount < 0:
         user_stack.append(PrintState(text="你這樣浪漫嗎?請輸入正數!"))
         return
 
-    data["wallet"] -= amount
-    user_data[id_]["wallet"] += amount
+    wallet = get_user_wallet(user)
+    set_user_wallet(user, wallet - amount)
+    tar_wallet = get_user_wallet(another)
+    set_user_wallet(another, tar_wallet + amount)
     user_stack.append(PrintState(text=f"{user.mention}你送給了 {another} {amount} 點浪漫因子!"))
 
-    with open('data/user_data.json', 'w') as f:
-        json.dump(user_data, f)
 
 def rob(user, user_stack, another):
-    data = get_user_data(user)
-
-    id_ = None
-    for name in user_data:
-        if another == user_data[name]["name"]:
-            id_ = name
-            break
-    if id_ == None:
-        return  
-    
-    if data["wallet"] < 10:
+    wallet = get_user_wallet(user)
+    if wallet < 10:
         user_stack.append(PrintState(text="你懂浪漫嗎?搶劫要付出代價(10點)!"))
         return
     delta = -10
 
-    points = user_data[id_]["wallet"]
-    if points < 10:
+    tar_wallet = get_user_wallet(another)
+    if tar_wallet < 10:
         user_stack.append(PrintState(text="他太可憐了，放過他吧"))
         return
 
-    earnings = random.randrange(0, int(points / 2))
+    earnings = random.randrange(0, int(tar_wallet / 2))
     delta += earnings 
-    user_data[id_]["wallet"] -= earnings
+    set_user_wallet(user, wallet + delta)
+    set_user_wallet(another, tar_wallet - earnings)
+
     if delta >= 0:
         user_stack.append(PrintState(text=f"你花了 {10} 點搶到 {another} 的 {earnings} 個浪漫因子!"))
     else:
         user_stack.append(PrintState(text=f"哈哈笑死，你賠了 {-delta} 個浪漫因子!"))
-    data["wallet"] += delta
-
-    with open('data/user_data.json', 'w') as f:
-        json.dump(user_data, f)
 
 
 def leaderboard(user, user_stack, n):
     leader_board = {}
     total = []
+    user_data = get_all_users()
     for name in user_data:
         amount = user_data[name]["wallet"]
         leader_board[amount] = name
@@ -291,6 +272,12 @@ def leaderboard(user, user_stack, n):
         else:
             index += 1
     user_stack.append(PrintState(embed=em))
+
+
+def use(user, user_stack, channel, item):
+    if action_exist(item):
+        run_action(channel, user, item, user_stack)
+
 
 def mix_command_handler(channel: TextChannel, args: list, user_stack: list):
     user_stack.append(MixState())

@@ -5,19 +5,12 @@ from romantic import *
 from exam import *
 from todo import *
 from mix import *
+from user_data import get_user_stack, save_users_datas, load_users_datas
 from discord import Guild, Message, TextChannel
 from discord.ext import commands
 from dislash import InteractionClient
 from utils import *
 from idle_message import *
-import os
-
-user_stacks = {}
-def get_user_stack(user) -> list:
-    if not user.id in user_stacks:
-        user_stacks[user.id] = []
-
-    return user_stacks[user.id]
 
 
 def clear_no_input_states(message: Message, stack: list):
@@ -113,4 +106,6 @@ async def on_dropdown(inter: MessageInteraction):
 
 
 with open('token.txt', 'r') as f:
+    load_users_datas()
     bot.run(f.read())
+    save_users_datas()

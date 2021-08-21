@@ -1,7 +1,6 @@
 import time
 from utils import *
-from mix import get_user_data
-from action import run_action
+from user_data import get_user_bag
 import random
 import xml.etree.ElementTree as ET
 
@@ -82,10 +81,10 @@ class RomanticState:
                 send_ad(message.channel, self.ad)
 
         if self.require != None and self.inter != None:
-            data = get_user_data(self.inter.author)
+            bag = get_user_bag(self.inter.author)
             has_required = False
-            if data != None and len(data['bag']) > 0:
-                for item in data['bag']:
+            if len(bag) > 0:
+                for item in bag:
                     if item["item"] == self.require and int(item['amount']) > 0:
                         has_required = True
                         break
@@ -94,12 +93,10 @@ class RomanticState:
                 goal = self.node.attrib['name']
                 embed = Embed(
                     title='提示',
-                    description=f'想要達成{goal}需要{self.require}喔！趕快輸入duke 浪漫因子 前往浪漫商店購買吧！',
+                    description=f'想要達成{goal}需要{self.require}喔！趕快輸入 duke 浪漫因子 前往浪漫商店購買吧！',
                     colour=0x00fbff
                 )
                 user_stack.append(PrintState(embed=embed))
-            else:
-                run_action(message.channel, self.inter.author, self.require, user_stack)
 
 
         if len(self.options) > 0:
