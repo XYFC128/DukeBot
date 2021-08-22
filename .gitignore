@@ -1,5 +1,6 @@
-/.vscode/
-/__pycache__/
+.vscode/
+__pycache__/
+*.py[cod]
 token.txt
 credentials.json
 token.json
