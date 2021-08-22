@@ -24,6 +24,16 @@ def get_all_items(sort=False):
 def get_item_by_name(name):
     if item_exist(name):
         return items[name]
+    possible_names = []
+    for it_name in items.keys():
+        if it_name.startswith(name):
+            possible_names.append(it_name)
+        elif str(it_name).find(name) != -1:
+            possible_names.append(it_name)
+    
+    if len(possible_names) == 1:
+        return items[possible_names[0]]
+    
     return None
 
 
@@ -36,6 +46,7 @@ def item_exist(name):
 
 
 def got_item(name):
-    if item_exist(name):
-        return items[name]['class'].acquired()
+    item = get_item_by_name(name)
+    if item != None:
+        return item['class'].acquired()
     return None

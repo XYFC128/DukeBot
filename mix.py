@@ -109,7 +109,7 @@ def buy_this(user, item_name, amount):
 
     if item == None:
         return [False, 1]
-
+    name = item['name']
     wallet = get_user_wallet(user)
     bag = get_user_bag(user)
 
@@ -120,30 +120,31 @@ def buy_this(user, item_name, amount):
     item_in_bag = False
     for thing in bag:
         n = thing["item"]
-        if n == item_name:
+        if n == name:
             new_amt = thing["amount"] + amount
             thing["amount"] = new_amt
             item_in_bag = True
             break
     if not item_in_bag:
-        bag.append({"item": item_name, "amount": amount})
+        bag.append({"item": name, "amount": amount})
     
     wallet -= cost
     set_user_wallet(user, wallet)
     return [True, "Done"]   
 
-def buy(user, user_stack, item, amount=1):
-    result = buy_this(user, item, amount)
+def buy(user, user_stack, item_name, amount=1):
+    result = buy_this(user, item_name, amount)
+    item = IM.get_item_by_name(item_name)
     if not result[0]:
         if result[1] == 1:
             user_stack.append(PrintState(text="Duke沒有這件商品"))
         if result[1] == 2:
-            user_stack.append(PrintState(text=f"你這樣浪漫嗎?妳的浪漫因子無法兌換{amount}個{item}，快去收集浪漫因子吧!"))
+            user_stack.append(PrintState(text=f"你這樣浪漫嗎?妳的浪漫因子無法兌換{amount}個{item['name']}，快去收集浪漫因子吧!"))
     else:
-        item_intro = IM.got_item(item)
+        item_intro = IM.got_item(item_name)
         if item_intro != None:
             user_stack.append(item_intro)
-        user_stack.append(PrintState(text=f"恭喜你獲得{amount}個{item}!!!"))
+        user_stack.append(PrintState(text=f"恭喜你獲得{amount}個{item['name']}!!!"))
 
 
 def sell_this(user, item_name, amount):
@@ -151,13 +152,14 @@ def sell_this(user, item_name, amount):
     if item == None:
         return [False, 1]
 
+    name = item['name']
     bag = get_user_bag(user)
 
     cost = item['price'] * amount
     item_in_bag = False
     for thing in bag:
         n = thing["item"]
-        if n == item_name:
+        if n == name:
             new_amt = thing["amount"] - amount
             if new_amt < 0:
                 return [False, 2]
@@ -175,17 +177,18 @@ def sell_this(user, item_name, amount):
     return [True, "Done"]
 
 
-def sell(user, user_stack, item, amount=1):
-    result = sell_this(user, item, amount)
+def sell(user, user_stack, item_name, amount=1):
+    result = sell_this(user, item_name, amount)
+    item = IM.get_item_by_name(item_name)
     if not result[0]:
         if result[1] == 1:
             user_stack.append(PrintState(text="Duke沒有這件商品"))
         if result[1] == 2:
-            user_stack.append(PrintState(text=f"你的包包裡沒有{amount}個{item}，快去浪漫商店買些東西吧!"))
+            user_stack.append(PrintState(text=f"你的包包裡沒有{amount}個{item['name']}，快去浪漫商店買些東西吧!"))
         if result[1] == 3:
-            user_stack.append(PrintState(text=f"你的包包裡沒有{item}，快去浪漫商店買些東西吧!"))
+            user_stack.append(PrintState(text=f"你的包包裡沒有{item['name']}，快去浪漫商店買些東西吧!"))
     else:
-        user_stack.append(PrintState(text=f"你成功賣出了{amount}個{item}"))
+        user_stack.append(PrintState(text=f"你成功賣出了{amount}個{item['name']}"))
 
 def give(user, user_stack, another, amount=0):
     tar_id = another.id
