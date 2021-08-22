@@ -4,15 +4,8 @@ import random
 
 from utils import *
 from user_data import get_all_users, get_user_bag, get_user_wallet, set_user_wallet
-from action import run_action, action_exist, got_action
+import items.ItemManager as IM
 
-mainshop = [
-    {"name":"LINE","price":0,"description":"新新人類所使用的通訊軟體"},
-    {"name":"tinder","price":0,"description":"俗人專用"},
-    {"name":"手套","price":5,"description":"紳士決鬥時使用"},
-    {"name":"操場","price":10,"description":"Duke小時候跑的操場"},
-    {"name":"月老廟","price":20,"description":"face-to-face的科學浪漫"},
-    {"name":"星星之火","price":50,"description":"足以燎原"},]
 
 class MixState:
     def __init__(self) -> None:
@@ -88,8 +81,9 @@ def earn(user, user_stack):
 
 def shop(user, user_stack):
     em = discord.Embed(title="浪漫商店🏩", color= 0xFF95CA)
-    for item in mainshop:
-        name = item["name"]
+    items = IM.get_all_items(True)
+    for item in items:
+        name = item['name']
         price = item["price"]
         desc = item["description"]
         em.add_field(name=name, value=f'{price} | {desc}')
@@ -111,19 +105,15 @@ def bag(user, user_stack):
 
 
 def buy_this(user, item_name, amount):
-    name = None
-    for item in mainshop:
-        if item["name"] == item_name:
-            name = item["name"]
-            price = item["price"]
-            break
-    if name == None:
+    item = IM.get_item_by_name(item_name)
+
+    if item == None:
         return [False, 1]
 
     wallet = get_user_wallet(user)
     bag = get_user_bag(user)
 
-    cost = price * amount
+    cost = item['price'] * amount
     if wallet < cost:
         return [False, 2]
 
@@ -150,26 +140,20 @@ def buy(user, user_stack, item, amount=1):
         if result[1] == 2:
             user_stack.append(PrintState(text=f"你這樣浪漫嗎?妳的浪漫因子無法兌換{amount}個{item}，快去收集浪漫因子吧!"))
     else:
-        item_intro = got_action(item)
+        item_intro = IM.got_item(item)
         if item_intro != None:
             user_stack.append(item_intro)
         user_stack.append(PrintState(text=f"恭喜你獲得{amount}個{item}!!!"))
 
 
-def sell_this(user, item_name, amount, price=None):
-    name = None
-    for item in mainshop:
-        if item["name"] == item_name:
-            name = item["name"]
-            if price == None:
-                price = int(0.8 * item["price"])
-            break
-    if name == None:
+def sell_this(user, item_name, amount):
+    item = IM.get_item_by_name(item_name)
+    if item == None:
         return [False, 1]
 
     bag = get_user_bag(user)
 
-    cost = price * amount
+    cost = item['price'] * amount
     item_in_bag = False
     for thing in bag:
         n = thing["item"]
@@ -184,7 +168,7 @@ def sell_this(user, item_name, amount, price=None):
     if not item_in_bag:
         return [False, 3]
 
-    wallet = get_user_wallet()
+    wallet = get_user_wallet(user)
     wallet += cost
     set_user_wallet(user, wallet)
 
@@ -275,8 +259,8 @@ def leaderboard(user, user_stack, n):
 
 
 def use(user, user_stack, channel, item):
-    if action_exist(item):
-        run_action(channel, user, item, user_stack)
+    if IM.item_exist(item):
+        IM.use_item(channel, user, item, user_stack)
 
 
 def mix_command_handler(channel: TextChannel, args: list, user_stack: list):
