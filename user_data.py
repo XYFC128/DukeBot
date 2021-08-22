@@ -6,7 +6,7 @@ users = {}
 data_file = 'data/user_data.json'
 
 def init_user(user):
-    user_id = user.id
+    user_id = str(user.id)
     users[user_id] = {}
     data = users[user_id]
     data['name'] = user.name
@@ -16,7 +16,7 @@ def init_user(user):
 
 
 def user_exist(user):
-    return user.id in users
+    return str(user.id) in users
 
 
 def get_all_users():
@@ -24,28 +24,28 @@ def get_all_users():
 
 
 def get_user_stack(user):
-    id = user.id
+    id = str(user.id)
     if not user_exist(user):
         init_user(user)
     return users[id]['stack']
 
 
 def get_user_bag(user):
-    id = user.id
+    id = str(user.id)
     if not user_exist(user):
         init_user(user)
     return users[id]['bag']
 
 
 def get_user_wallet(user):
-    id = user.id
+    id = str(user.id)
     if not user_exist(user):
         init_user(user)
     return users[id]['wallet']
 
 
 def set_user_wallet(user, amount):
-    id = user.id
+    id = str(user.id)
     if not user_exist(user):
         init_user(user)
     if isinstance(amount, int) and 0 <= amount:
@@ -55,6 +55,7 @@ def set_user_wallet(user, amount):
 def load_users_datas():
     if os.path.isfile(data_file):
         with open(data_file, 'r') as f:
+            global users
             users = json.load(f)
 
 
