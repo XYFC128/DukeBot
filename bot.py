@@ -33,8 +33,8 @@ def main_command_handler(message: Message):
     command_handlers = {
         'hello' : say_hello,
         '說你好' : say_hello,
-        'STFU': clear_stack,
-        '閉嘴': clear_stack,
+        'STFU': stop_talking,
+        '閉嘴': stop_talking,
         '教我' : romantic_command_handler,
         '查學測' : exam_command_handler,
         '查校系' : major_command_handler,

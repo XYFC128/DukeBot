@@ -10,6 +10,7 @@ google-auth-httplib2 = "*"
 google-auth-oauthlib = "*"
 "dislash.py" = "*"
 pandas = "*"
+pynacl = "*"
 
 [dev-packages]
 

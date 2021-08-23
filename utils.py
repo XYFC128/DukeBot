@@ -1,4 +1,5 @@
 import asyncio
+from datetime import timedelta
 import random
 import time
 from typing import Callable
@@ -89,7 +90,11 @@ def say_hello(channel: TextChannel, args=[], user_stack=[]):
     send_msg(channel, '歡迎收看 浪漫 Duke ! 想學更多浪漫技巧記得訂閱我的 channel ，開啟小鈴鐺，分享！浪漫 Duke 幫你找回屬於你的浪漫')
 
 
-def clear_stack(channel: TextChannel, args: list, user_stack: list):
+def stop_talking(channel: TextChannel, args: list, user_stack: list):
+    voice_client = channel.guild.voice_client
+    if voice_client and voice_client.is_connected():
+        loop = asyncio.get_event_loop()
+        asyncio.run_coroutine_threadsafe(voice_client.disconnect(), loop)
     user_stack.clear()
     send_msg(channel, "對不起")
 
@@ -166,6 +171,51 @@ class MenuState:
         loop = asyncio.get_event_loop()
         res = asyncio.run_coroutine_threadsafe(self.async_run(message, user_stack), loop)
         
+
+    def require_input(self):
+        return False
+
+
+class PlayMusicState:
+    def __init__(self, file: str, song_name='神秘的一首歌', play_to=None) -> None:
+        self.file = file
+        self.name = song_name
+        self.play_to = play_to
+
+
+    async def async_play(self, guild, voice_channel):
+        voice_client = guild.voice_client
+        if voice_client and voice_client.is_connected():
+            await voice_client.move_to(voice_channel)
+        else:
+            await voice_channel.connect()
+            voice_client = guild.voice_client
+        
+        if voice_client.is_playing():
+            voice_client.stop()
+
+        voice_client.play(FFmpegPCMAudio(self.file))
+
+
+    def run(self, message: Message, user_stack=[]):
+        target = message.author
+        if self.play_to != None:
+            target = self.play_to
+
+        if not target.voice or not target.voice.channel:
+            send_msg(message.channel, f'{target.mention}尚未連接到任何語音頻道，因此 Duke 無法播放《{self.name}》給你聽 QQ')
+            return
+        voice_channel = target.voice.channel
+
+        emb = Embed(
+            title='為您播放',
+            description=self.name,
+            color=0xFF95CA
+        )
+        send_msg(message.channel, emb=emb)
+        loop = asyncio.get_event_loop()
+        asyncio.run_coroutine_threadsafe(self.async_play(message.guild, voice_channel), loop)
+
 
     def require_input(self):
         return False
